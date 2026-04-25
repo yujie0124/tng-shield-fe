@@ -112,4 +112,15 @@ function sharedDbPlugin(): Plugin {
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), sharedDbPlugin()],
+  server: {
+    proxy: {
+      // Forward AI risk API calls so the browser sees a same-origin request
+      // and CORS doesn't block the AWS endpoint during dev.
+      '/risk-api': {
+        target: 'http://ec2-13-215-207-167.ap-southeast-1.compute.amazonaws.com',
+        changeOrigin: true,
+        rewrite: (p) => p.replace(/^\/risk-api/, '/api'),
+      },
+    },
+  },
 })

@@ -3,22 +3,19 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { familyShieldService } from '../services';
 import './ReviewToast.css';
 
-const SEEN_PREFIX = 'tng_seen_review_ids:';
+const SEEN_REVIEWS_PREFIX = 'tng_seen_review_ids:';
+const SEEN_ALERTS_PREFIX = 'tng_seen_alert_ids:';
 
-function seenKey(userId) {
-  return `${SEEN_PREFIX}${userId}`;
-}
-
-function loadSeen(userId) {
+function loadSet(key) {
   try {
-    return new Set(JSON.parse(localStorage.getItem(seenKey(userId)) || '[]'));
+    return new Set(JSON.parse(localStorage.getItem(key) || '[]'));
   } catch {
     return new Set();
   }
 }
 
-function saveSeen(userId, set) {
-  localStorage.setItem(seenKey(userId), JSON.stringify([...set]));
+function saveSet(key, set) {
+  localStorage.setItem(key, JSON.stringify([...set]));
 }
 
 export default function ReviewToast() {
@@ -37,7 +34,7 @@ export default function ReviewToast() {
         const s = await familyShieldService.getStatus();
         if (!mounted) return;
 
-        // Only guardians get review notifications. If the active user
+        // Only guardians get notifications. If the active user
         // isn't a guardian, clear any toast and bail.
         if (s?.role !== 'guardian') {
           if (lastUserIdRef.current !== null) {
@@ -59,23 +56,45 @@ export default function ReviewToast() {
           setToast(null);
         }
 
-        const seen = loadSeen(userId);
+        const reviewKey = `${SEEN_REVIEWS_PREFIX}${userId}`;
+        const alertKey = `${SEEN_ALERTS_PREFIX}${userId}`;
+        const seenReviews = loadSet(reviewKey);
+        const seenAlerts = loadSet(alertKey);
+
         const pending = s.pending || [];
+        const alerts = s.recentAlerts || [];
 
         if (firstRunForUserRef.current) {
-          // on first poll for this user, mark current pending as seen so
-          // we only fire on NEW arrivals while they're using the app
-          pending.forEach((p) => seen.add(p.id));
-          saveSeen(userId, seen);
+          // On first poll for this user, mark current items as seen so
+          // we only fire on NEW arrivals while they're using the app.
+          pending.forEach((p) => seenReviews.add(p.id));
+          alerts.forEach((a) => seenAlerts.add(a.txId));
+          saveSet(reviewKey, seenReviews);
+          saveSet(alertKey, seenAlerts);
           firstRunForUserRef.current = false;
           return;
         }
 
-        const fresh = pending.find((p) => !seen.has(p.id));
-        if (fresh && location.pathname !== `/shield/review/${fresh.id}`) {
-          setToast(fresh);
-          seen.add(fresh.id);
-          saveSeen(userId, seen);
+        // Pending reviews (grey-zone) take priority over informational
+        // auto-block / auto-approve toasts.
+        const freshReview = pending.find((p) => !seenReviews.has(p.id));
+        if (freshReview && location.pathname !== `/shield/review/${freshReview.id}`) {
+          setToast({ kind: 'review', data: freshReview });
+          seenReviews.add(freshReview.id);
+          saveSet(reviewKey, seenReviews);
+          if (dismissTimer.current) clearTimeout(dismissTimer.current);
+          dismissTimer.current = setTimeout(() => setToast(null), 8000);
+          return;
+        }
+
+        const freshAlert = alerts.find((a) => !seenAlerts.has(a.txId));
+        if (
+          freshAlert &&
+          location.pathname !== `/shield/alert/${freshAlert.wardId}/${freshAlert.txId}`
+        ) {
+          setToast({ kind: 'alert', data: freshAlert });
+          seenAlerts.add(freshAlert.txId);
+          saveSet(alertKey, seenAlerts);
           if (dismissTimer.current) clearTimeout(dismissTimer.current);
           dismissTimer.current = setTimeout(() => setToast(null), 8000);
         }
@@ -95,25 +114,56 @@ export default function ReviewToast() {
 
   if (!toast) return null;
 
-  const ai = toast.aiRiskReport || {};
+  if (toast.kind === 'review') {
+    const r = toast.data;
+    const ai = r.aiRiskReport || {};
+    const onOpen = () => {
+      setToast(null);
+      navigate(`/shield/review/${r.id}`);
+    };
+    return (
+      <div className={`review-toast review-toast-${ai.level || 'medium'}`}>
+        <div className="review-toast-icon">🛡</div>
+        <div className="review-toast-body" onClick={onOpen}>
+          <div className="review-toast-title">
+            New review · {r.fromShortName || r.fromName}
+          </div>
+          <div className="review-toast-sub">
+            RM {r.amount.toLocaleString()} → {r.recipientName || r.recipientPhone}
+            {ai.matchedScamPatternLabel && ` · ${ai.matchedScamPatternLabel}`}
+          </div>
+        </div>
+        <button className="review-toast-cta" onClick={onOpen}>Review</button>
+        <button className="review-toast-close" onClick={() => setToast(null)}>×</button>
+      </div>
+    );
+  }
+
+  // Auto-block or high-value auto-approve alert.
+  const a = toast.data;
+  const isBlock = a.kind === 'auto_block';
+  const ai = a.aiRiskReport || {};
+  const tone = isBlock ? 'critical' : 'low';
+  const icon = isBlock ? '⛔' : '✓';
+  const title = isBlock
+    ? `Auto-blocked · ${a.wardName}`
+    : `High-value approved · ${a.wardName}`;
+  const recipientLabel = a.recipientName || a.recipientPhone || 'Recipient';
+  const sub = `RM ${a.amount.toLocaleString()} → ${recipientLabel}${
+    ai.reasons?.[0] ? ` · ${ai.reasons[0]}` : ''
+  }`;
   const onOpen = () => {
     setToast(null);
-    navigate(`/shield/review/${toast.id}`);
+    navigate(`/shield/alert/${a.wardId}/${a.txId}`);
   };
-
   return (
-    <div className={`review-toast review-toast-${ai.level || 'medium'}`}>
-      <div className="review-toast-icon">🛡</div>
+    <div className={`review-toast review-toast-${tone}`}>
+      <div className="review-toast-icon">{icon}</div>
       <div className="review-toast-body" onClick={onOpen}>
-        <div className="review-toast-title">
-          New review · {toast.fromShortName || toast.fromName}
-        </div>
-        <div className="review-toast-sub">
-          RM {toast.amount.toLocaleString()} → {toast.recipientName || toast.recipientPhone}
-          {ai.matchedScamPatternLabel && ` · ${ai.matchedScamPatternLabel}`}
-        </div>
+        <div className="review-toast-title">{title}</div>
+        <div className="review-toast-sub">{sub}</div>
       </div>
-      <button className="review-toast-cta" onClick={onOpen}>Review</button>
+      <button className="review-toast-cta" onClick={onOpen}>View</button>
       <button className="review-toast-close" onClick={() => setToast(null)}>×</button>
     </div>
   );

@@ -56,6 +56,19 @@ function GuardianShield({ status, navigate, reload }) {
         </>
       )}
 
+      {status.recentAlerts?.length > 0 && (
+        <>
+          <h2 className="section-title">Recent shield alerts</h2>
+          {status.recentAlerts.map((a) => (
+            <AlertCard
+              key={a.txId}
+              alert={a}
+              onClick={() => navigate(`/shield/alert/${a.wardId}/${a.txId}`)}
+            />
+          ))}
+        </>
+      )}
+
       <h2 className="section-title">Watching over</h2>
       {status.wards.map((w) => (
         <WardCard key={w.id} ward={w} onChange={reload} navigate={navigate} />
@@ -71,6 +84,49 @@ function GuardianShield({ status, navigate, reload }) {
         </Button>
       </Card>
     </div>
+  );
+}
+
+function AlertCard({ alert, onClick }) {
+  const ai = alert.aiRiskReport || {};
+  const isBlock = alert.kind === 'auto_block';
+  const eyebrow = isBlock ? '⛔ Auto-blocked' : '✓ Auto-approved · high value';
+  const recipientLabel = alert.recipientName || alert.recipientPhone || 'Recipient';
+  const decided = alert.decidedAt ? new Date(alert.decidedAt) : null;
+  const subline = decided
+    ? decided.toLocaleString(undefined, {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+    : '';
+  return (
+    <Card onClick={onClick} className="pending-card">
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div style={{ flex: 1 }}>
+          <div
+            className="pending-from"
+            style={{ color: isBlock ? 'var(--tng-danger)' : 'var(--tng-success)' }}
+          >
+            {eyebrow} · {alert.wardName}
+          </div>
+          <div className="pending-line">
+            RM {alert.amount.toLocaleString()} → {recipientLabel}
+          </div>
+          {ai.reasons?.[0] && (
+            <div className="pending-pattern" style={{ fontSize: 12 }}>
+              {ai.reasons[0]}
+            </div>
+          )}
+        </div>
+        <RiskBadge level={ai.level} score={ai.score} />
+      </div>
+      <div className="pending-foot">
+        <span className="muted" style={{ fontSize: 11 }}>{subline}</span>
+        <span className="muted">View AI report ›</span>
+      </div>
+    </Card>
   );
 }
 

@@ -8,3 +8,4 @@ export { default as History } from './History';
 export { default as Profile } from './Profile';
 export { default as Shield } from './Shield';
 export { default as ShieldReview } from './ShieldReview';
+export { default as ShieldAlert } from './ShieldAlert';

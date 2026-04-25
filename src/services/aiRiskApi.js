@@ -1,11 +1,17 @@
 import apiClient from './apiClient';
 import { getDb, setDb } from './mockBackend';
-import samples from '../data/aiRiskApiSamples.json';
 
+// In dev, hit the same-origin proxy path defined in vite.config.ts (so the
+// browser doesn't trip CORS against the AWS host). In prod, hit the AWS
+// production endpoint directly. Override either with VITE_RISK_API_BASE_URL.
+const PROD_RISK_API =
+  'http://ec2-13-215-207-167.ap-southeast-1.compute.amazonaws.com/api';
 const RISK_API_BASE =
-  import.meta.env.VITE_RISK_API_BASE_URL || 'http://localhost:8000';
-const USE_LIVE_RISK_API = !!import.meta.env.VITE_USE_LIVE_RISK_API;
-const MOCK_LATENCY_MS = 600;
+  import.meta.env.VITE_RISK_API_BASE_URL ||
+  (import.meta.env.DEV ? '/risk-api' : PROD_RISK_API);
+const RISK_API_PATH =
+  import.meta.env.VITE_RISK_API_PATH || '/run-risk-score';
+const RISK_API_TIMEOUT_MS = 15000;
 
 const LEVEL_MAP = {
   CRITICAL: 'critical',
@@ -72,12 +78,22 @@ function toFactors(signalBreakdown = {}) {
 }
 
 // Maps decision_band + action → app's three-way flow.
+// Live API uses bands: TRUSTED / SAFE (approve), SUSPICIOUS (review),
+// HIGH_RISK / BLOCKED / CRITICAL (block); actions: ALLOW / APPROVE,
+// COOL_OFF_OR_GUARDIAN_VERIFICATION, BLOCK.
 function decisionFromResponse(res) {
   const action = (res.action || '').toUpperCase();
   const band = (res.decision_band || '').toUpperCase();
   const level = (res.risk_level || '').toUpperCase();
 
-  if (action === 'BLOCK' || band === 'BLOCKED' || band === 'CRITICAL') return 'block';
+  if (
+    action === 'BLOCK' ||
+    band === 'BLOCKED' ||
+    band === 'HIGH_RISK' ||
+    band === 'CRITICAL'
+  ) {
+    return 'block';
+  }
   if (
     action === 'COOL_OFF_OR_GUARDIAN_VERIFICATION' ||
     action === 'COOL_OFF' ||
@@ -86,7 +102,14 @@ function decisionFromResponse(res) {
   ) {
     return 'pending_review';
   }
-  if (action === 'APPROVE' || band === 'SAFE') return 'approve';
+  if (
+    action === 'APPROVE' ||
+    action === 'ALLOW' ||
+    band === 'SAFE' ||
+    band === 'TRUSTED'
+  ) {
+    return 'approve';
+  }
 
   if (level === 'CRITICAL') return 'block';
   if (level === 'HIGH' || level === 'MEDIUM') return 'pending_review';
@@ -127,61 +150,38 @@ export function normalizeRiskResponse(apiRes, extras = {}) {
   };
 }
 
-// Pick which sample to return based on merchant scenario. Falls back to
-// grey-zone for recipients we don't recognise (manual phone entry, etc.).
-function pickScenario({ merchant, contact }) {
-  if (merchant?.scenario === 'known-bad') return 'known-bad';
-  if (merchant?.scenario === 'known-good') return 'known-good';
-  if (merchant?.scenario === 'grey-zone') return 'grey-zone';
-  // Trusted saved contact → safe; unknown phone → grey zone.
-  if (contact?.trusted) return 'known-good';
-  return 'grey-zone';
-}
+// The AWS /run-risk-score endpoint rejects non-ASCII bytes in the JSON
+// body with a 400 "error parsing the body". Strip them — `·`, smart
+// quotes, em-dashes, etc. — and replace with safe ASCII equivalents
+// before serialising.
+const ASCII_REPLACEMENTS = [
+  [/[‘’‚‛′]/g, "'"],
+  [/[“”„‟″]/g, '"'],
+  [/[–—−]/g, '-'],
+  [/[•·]/g, '-'],
+  [/…/g, '...'],
+  [/ /g, ' '],
+];
 
-// Customise a canned sample with the actual transaction id and merchant
-// specifics so the demo feels responsive even without the live API.
-function customiseSample(template, { payload, merchant, contact }) {
-  const reasons = [...(template.reasons || [])];
-
-  if (merchant?.blacklistedBy?.length) {
-    reasons[0] = `Recipient is on ${merchant.blacklistedBy.join(', ')} fraud blacklists`;
-  }
-  if (merchant?.blacklistedNote) {
-    reasons.splice(1, 0, merchant.blacklistedNote);
-  }
-  if (merchant?.verifiedBy && template.action === 'APPROVE') {
-    reasons[0] = `Verified by ${merchant.verifiedBy}`;
-  }
-  if (merchant?.recentFraudReports > 0 && template.action !== 'APPROVE') {
-    reasons.push(
-      `${merchant.recentFraudReports} fraud report(s) filed in the last 30 days`,
-    );
-  }
-  if (
-    payload?.customer_profile &&
-    !payload.customer_profile.prior_history_with_recipient &&
-    template.action !== 'APPROVE'
-  ) {
-    reasons.push('No prior history between customer and recipient');
-  }
-
-  return {
-    ...template,
-    transaction_id: payload?.transaction_id || template.transaction_id,
-    reasons: reasons.slice(0, 6),
-  };
-}
-
-// Mock dispatch — returns a sample-shaped response based on the merchant
-// scenario. Used while the live /run-risk-score endpoint is in progress.
-export function mockRiskResponse({ payload, merchant, contact }) {
-  const scenario = pickScenario({ merchant, contact });
-  const template = samples[scenario] || samples['grey-zone'];
-  return customiseSample(template, { payload, merchant, contact });
+function toAscii(value) {
+  if (value == null) return value;
+  if (typeof value !== 'string') return value;
+  let out = value;
+  for (const [re, rep] of ASCII_REPLACEMENTS) out = out.replace(re, rep);
+  // Drop anything still outside printable ASCII to avoid future surprises.
+  return out.replace(/[^\x09\x0A\x0D\x20-\x7E]/g, '');
 }
 
 // Build the API request body from app state. Returns the payload exactly
 // in the shape the /run-risk-score endpoint expects (snake_case).
+//
+// Three demo scenarios drive distinct API responses:
+//   - known-good (TNB, 99 Speedmart): high network rep, trusted=true,
+//     verified_by set → API returns TRUSTED/ALLOW.
+//   - grey-zone (Kak Siti, Carousell): mid-range rep, no verification →
+//     API returns SUSPICIOUS/COOL_OFF_OR_GUARDIAN_VERIFICATION.
+//   - known-bad (QUICK CASH, EZ MONEY): blacklisted_by populated, low
+//     rep, high fraud reports → API returns HIGH_RISK/BLOCK.
 export function buildRiskPayload({
   user,
   merchant,
@@ -199,16 +199,45 @@ export function buildRiskPayload({
   const priorHistory =
     contact?.priorHistoryWithRecipient ?? !!contact ?? false;
 
+  const merchantName = merchant?.name || contact?.name || recipientPhone;
+  const contextNotes =
+    notes ||
+    merchant?.contextNote ||
+    (contact ? `Saved contact (${contact.name}).` : 'Manual phone entry.');
+
+  // Pass blacklist + verification signals through context so the model
+  // sees the same scenario hints the UI shows. Non-ASCII chars (middle
+  // dots, em-dashes from merchants.json) crash the API parser, so
+  // sanitise every string field that hits the wire.
+  const context = {
+    network_reputation_score: merchant?.networkReputationScore ?? 50,
+    recent_fraud_reports: merchant?.recentFraudReports ?? 0,
+    notes: toAscii(contextNotes),
+  };
+  if (merchant?.blacklistedBy?.length) {
+    context.blacklisted_by = merchant.blacklistedBy.map(toAscii);
+  }
+  if (merchant?.blacklistedNote) {
+    context.blacklist_reason = toAscii(merchant.blacklistedNote);
+  }
+  if (merchant?.verifiedBy) {
+    context.verified_by = toAscii(merchant.verifiedBy);
+  }
+  if (merchant?.trusted != null || contact?.trusted != null) {
+    context.trusted = merchant?.trusted ?? contact?.trusted ?? null;
+  }
+
   return {
     transaction_id: txId,
     transaction: {
-      merchant_name: merchant?.name || contact?.name || recipientPhone,
+      merchant_name: toAscii(merchantName),
       amount,
       currency,
       channel,
       recipient_account_id:
         merchant?.accountId || `acc-${(recipientPhone || 'unknown').replace(/\D/g, '')}`,
       recipient_type: recipientType,
+      recipient_phone: recipientPhone || null,
       timestamp: new Date().toISOString(),
       device_id: user?.deviceId || 'device-unknown',
       ip_address: user?.ipAddress || '0.0.0.0',
@@ -221,45 +250,41 @@ export function buildRiskPayload({
       txn_count_30d: user?.txnCount30d ?? 0,
       prior_history_with_recipient: priorHistory,
     },
-    context: {
-      network_reputation_score: merchant?.networkReputationScore ?? 50,
-      recent_fraud_reports: merchant?.recentFraudReports ?? 0,
-      notes:
-        notes ||
-        merchant?.contextNote ||
-        (contact ? `Saved contact (${contact.name}).` : 'Manual phone entry.'),
-    },
+    context,
     use_sc_investor_alert_check: true,
   };
 }
 
+// Hits the live AWS /run-risk-score endpoint. `options` is reserved
+// (e.g. for a future `merchant`/`contact` enrichment hook) but no longer
+// gates a mock branch — the live API is the only source of truth.
+// eslint-disable-next-line no-unused-vars
 export async function requestRiskReport(payload, options = {}) {
-  // Mock mode (default while the live endpoint is in progress).
-  if (!USE_LIVE_RISK_API && !options.live) {
-    if (MOCK_LATENCY_MS > 0) {
-      await new Promise((r) => setTimeout(r, MOCK_LATENCY_MS));
-    }
-    return mockRiskResponse({
-      payload,
-      merchant: options.merchant,
-      contact: options.contact,
+  // Live API on AWS. Bypasses the in-app apiClient because the risk
+  // service runs on a different host than the wallet backend.
+  const url = `${RISK_API_BASE.replace(/\/$/, '')}${RISK_API_PATH}`;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), RISK_API_TIMEOUT_MS);
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(payload),
+      signal: controller.signal,
     });
+    if (!res.ok) {
+      const text = await res.text().catch(() => '');
+      throw new Error(
+        `Risk API error ${res.status}${text ? ` — ${text.slice(0, 200)}` : ''}`,
+      );
+    }
+    return await res.json();
+  } finally {
+    clearTimeout(timer);
   }
-
-  // Live API. Bypasses the in-app apiClient because the risk service runs
-  // on a different host (port 8000) than the wallet backend.
-  const res = await fetch(`${RISK_API_BASE}/run-risk-score`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: JSON.stringify(payload),
-  });
-  if (!res.ok) {
-    throw new Error(`Risk API error ${res.status}`);
-  }
-  return res.json();
 }
 
 // Keep apiClient referenced so eslint doesn't complain if it stays imported

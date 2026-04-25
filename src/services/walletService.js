@@ -49,6 +49,10 @@ function notifyAutoBlock(db, { ward, link, merchant, recipientPhone, amount, txI
       txId,
       wardId: ward.id,
       severity: 'critical',
+      aiRiskReport: report,
+      recipientName: merchant?.name || null,
+      recipientPhone,
+      amount,
     });
   }
 }
@@ -85,6 +89,9 @@ function notifyAutoApprove(
       aboveThreshold: !!aboveThreshold,
       threshold: link?.threshold || null,
       aiRiskReport: aboveThreshold ? report : undefined,
+      recipientName: merchant?.name || null,
+      recipientPhone,
+      amount,
     });
   }
 }
@@ -153,7 +160,11 @@ export const walletService = {
     const link = findGuardianLink(db, u.id);
     const txId = makeId('tx');
 
-    // 1. Build payload + call /run-risk-score (mocked while live API is WIP).
+    // 1. Build payload + call the live AWS /run-risk-score endpoint.
+    //    Same call drives all three demo scenarios (known-good /
+    //    grey-zone / known-bad) — `merchants.json` carries the
+    //    network-rep, blacklist and verification signals the model
+    //    needs to differentiate them.
     const payload = buildRiskPayload({
       user: u,
       merchant,
@@ -165,12 +176,15 @@ export const walletService = {
     });
 
     let apiResponse;
+    let apiError = null;
     try {
       apiResponse = await requestRiskReport(payload, { merchant, contact });
     } catch (err) {
-      // Fall back to the local rule-based engine so the demo still flows
-      // when the live API can't be reached.
-      console.warn('Risk API failed, falling back to local engine:', err);
+      // Local rule-based engine is a last-resort fallback so the demo
+      // doesn't dead-end if the AWS host is unreachable. Tag the report
+      // so the UI / debugger can tell it didn't come from the live API.
+      console.error('[aiRiskApi] live risk API failed:', err);
+      apiError = err;
       apiResponse = null;
     }
 
@@ -180,6 +194,7 @@ export const walletService = {
         recipientName: merchant?.name || contact?.name || null,
         sources: merchant?.blacklistedBy || [],
       });
+      report.reportSource = 'live_api';
     } else {
       report = generateRiskReport({
         ward: u,
@@ -195,6 +210,8 @@ export const walletService = {
         else if (report.score >= 35) report.decision = 'pending_review';
         else report.decision = 'approve';
       }
+      report.reportSource = 'local_fallback';
+      report.reportSourceError = apiError?.message || 'unknown';
     }
 
     const recipientLabel = merchant?.name || contact?.name || recipientPhone;

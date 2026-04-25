@@ -1,63 +1,6 @@
 {
   "user-Fatimah": [
-    {
-      "id": "tx-Fatimah-001",
-      "userId": "user-Fatimah",
-      "type": "payment",
-      "title": "Tenaga Nasional Bill",
-      "merchantId": "TNB-MY",
-      "amount": 145.20,
-      "currency": "MYR",
-      "channel": "wallet_payment",
-      "timestamp": "2026-04-24T16:15:00+08:00",
-      "deviceId": "device-fatimah-android-001",
-      "ipAddress": "60.51.118.42",
-      "priorHistoryWithRecipient": true,
-      "createdAt": "2026-04-24T08:15:00.000Z"
-    },
-    {
-      "id": "tx-Fatimah-002",
-      "userId": "user-Fatimah",
-      "type": "payment",
-      "title": "99 Speedmart Ipoh",
-      "merchantId": "SPDMRT-IPH",
-      "amount": 38.40,
-      "currency": "MYR",
-      "channel": "wallet_payment",
-      "timestamp": "2026-04-23T02:42:00+08:00",
-      "deviceId": "device-fatimah-android-001",
-      "ipAddress": "60.51.118.42",
-      "priorHistoryWithRecipient": true,
-      "createdAt": "2026-04-22T18:42:00.000Z"
-    },
-    {
-      "id": "tx-Fatimah-004",
-      "userId": "user-Fatimah",
-      "type": "reload",
-      "title": "Reload via FPX",
-      "amount": 200.00,
-      "currency": "MYR",
-      "channel": "bank_reload",
-      "timestamp": "2026-04-18T22:00:00+08:00",
-      "deviceId": "device-fatimah-android-001",
-      "ipAddress": "60.51.118.42",
-      "createdAt": "2026-04-18T14:00:00.000Z"
-    },
-    {
-      "id": "tx-Fatimah-008",
-      "userId": "user-Fatimah",
-      "type": "blocked",
-      "title": "Blocked transfer · Maybank ****0089",
-      "amount": 4800.00,
-      "currency": "MYR",
-      "channel": "wallet_transfer",
-      "timestamp": "2026-03-28T19:42:00+08:00",
-      "deviceId": "device-fatimah-android-001",
-      "ipAddress": "60.51.118.42",
-      "priorHistoryWithRecipient": false,
-      "reason": "police_impersonation",
-      "createdAt": "2026-03-28T11:42:00.000Z"
-    }
+    
   ],
   "user-Danial": [
     {

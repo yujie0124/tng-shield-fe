@@ -11,6 +11,7 @@ import {
   Profile,
   Shield,
   ShieldReview,
+  ShieldAlert,
 } from './pages';
 
 const HIDE_NAV_ON: string[] = ['/login'];
@@ -77,6 +78,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <ShieldReview />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/shield/alert/:wardId/:txId"
+            element={
+              <ProtectedRoute>
+                <ShieldAlert />
               </ProtectedRoute>
             }
           />

@@ -6,7 +6,6 @@ export { familyShieldService } from './familyShieldService';
 export {
   applyRiskResponse,
   buildRiskPayload,
-  mockRiskResponse,
   normalizeRiskResponse,
   requestRiskReport,
   runRiskCheckForTransaction,

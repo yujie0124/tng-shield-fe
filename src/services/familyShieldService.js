@@ -9,15 +9,21 @@ function findLinkForWard(db, wardId) {
   return (db.guardianLinks || []).find((l) => l.wardId === wardId) || null;
 }
 
+// Returns true if the review was just expired by this call (caller should
+// persist). Pure read otherwise — important because getReview is polled
+// every 1s by the ward's TransferPending screen and any unconditional
+// setDb() there would push a stale local cache back to the server,
+// clobbering the guardian's decision before the cross-tab sync can land.
 function expireIfNeeded(db, review) {
-  if (review.status !== 'pending') return review;
+  if (review.status !== 'pending') return false;
   const ends = new Date(review.coolOffEndsAt).getTime();
   if (Date.now() > ends + 24 * 3600 * 1000) {
     review.status = 'expired';
     review.decidedAt = new Date().toISOString();
     review.guardianMessage = 'Auto-blocked — cool-off elapsed without guardian decision.';
+    return true;
   }
-  return review;
+  return false;
 }
 
 export const familyShieldService = {
@@ -28,10 +34,36 @@ export const familyShieldService = {
 
     if (u.role === 'guardian') {
       const links = findLinksForGuardian(db, u.id);
+      const recentAlerts = [];
       const wards = links.map((link) => {
         const w = db.users.find((x) => x.id === link.wardId);
         const txs = db.transactions[link.wardId] || [];
         const reviews = (db.pendingReviews || []).filter((r) => r.fromUserId === link.wardId);
+
+        // Surface auto-block (known-bad) and high-value auto-approve
+        // (known-good above threshold) transactions to the guardian feed.
+        // The grey-zone path is already covered by `pending` reviews below.
+        for (const t of txs) {
+          if (!t.aiRiskReport) continue;
+          const isAutoBlock = t.status === 'blocked' && t.reason === 'ai_blocked';
+          const isHighValueApprove =
+            t.status === 'completed' && t.aboveThreshold && t.guardianAlerted;
+          if (!isAutoBlock && !isHighValueApprove) continue;
+          recentAlerts.push({
+            kind: isAutoBlock ? 'auto_block' : 'high_value_approve',
+            txId: t.id,
+            wardId: link.wardId,
+            wardName: w?.shortName || w?.name || 'Ward',
+            wardAvatarColor: w?.avatarColor || null,
+            amount: t.amount,
+            recipientName: t.aiRiskReport.recipientName || null,
+            recipientPhone: t.recipientPhone || null,
+            createdAt: t.createdAt,
+            decidedAt: t.decidedAt || t.createdAt,
+            threshold: t.thresholdAtRequest || link.threshold || null,
+            aiRiskReport: t.aiRiskReport,
+          });
+        }
         const blockedCount = reviews.filter((r) => r.status === 'blocked' || r.status === 'expired').length;
         const blockedSavings = reviews
           .filter((r) => r.status === 'blocked' || r.status === 'expired')
@@ -64,15 +96,23 @@ export const familyShieldService = {
         };
       });
 
-      const pending = (db.pendingReviews || [])
-        .filter((r) => r.guardianId === u.id && r.status === 'pending')
-        .map((r) => expireIfNeeded(db, r));
-      const blockedReviews = (db.pendingReviews || []).filter(
-        (r) => r.guardianId === u.id && (r.status === 'blocked' || r.status === 'expired'),
+      const guardianReviews = (db.pendingReviews || []).filter(
+        (r) => r.guardianId === u.id,
+      );
+      let mutated = false;
+      for (const r of guardianReviews) {
+        if (expireIfNeeded(db, r)) mutated = true;
+      }
+      const pending = guardianReviews.filter((r) => r.status === 'pending');
+      const blockedReviews = guardianReviews.filter(
+        (r) => r.status === 'blocked' || r.status === 'expired',
       );
       const blockedSavings = blockedReviews.reduce((s, r) => s + r.amount, 0);
 
-      setDb(db);
+      if (mutated) setDb(db);
+      recentAlerts.sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      );
       return {
         role: 'guardian',
         guardian: { id: u.id, name: u.shortName || u.name },
@@ -80,17 +120,20 @@ export const familyShieldService = {
         pending,
         blockedSavings,
         blockedCount: blockedReviews.length,
+        recentAlerts: recentAlerts.slice(0, 10),
       };
     }
 
     const link = findLinkForWard(db, u.id);
     const guardian = link ? db.users.find((x) => x.id === link.guardianId) || null : null;
-    const myReviews = (db.pendingReviews || [])
-      .filter((r) => r.fromUserId === u.id)
-      .map((r) => expireIfNeeded(db, r));
+    const myReviews = (db.pendingReviews || []).filter((r) => r.fromUserId === u.id);
+    let mutated = false;
+    for (const r of myReviews) {
+      if (expireIfNeeded(db, r)) mutated = true;
+    }
     const latestPending = myReviews.find((r) => r.status === 'pending') || null;
     const latestBlocked = myReviews.find((r) => r.status === 'blocked' || r.status === 'expired') || null;
-    setDb(db);
+    if (mutated) setDb(db);
     return {
       role: 'ward',
       wardType: link?.wardType || u.wardType || 'elderly',
@@ -106,12 +149,51 @@ export const familyShieldService = {
     };
   },
 
+  // Used by the guardian's alert detail page (auto-block / high-value
+  // auto-approve). Looks up a ward transaction the guardian is allowed
+  // to see — i.e. a ward they are linked to.
+  async getWardAlert({ wardId, txId }) {
+    const u = authService.getStoredUser();
+    if (!u) throw new Error('Not authenticated');
+    const db = getDb();
+
+    const isLinked = (db.guardianLinks || []).some(
+      (l) => l.guardianId === u.id && l.wardId === wardId,
+    );
+    if (u.role !== 'guardian' || !isLinked) return null;
+
+    const tx = (db.transactions[wardId] || []).find((t) => t.id === txId);
+    if (!tx || !tx.aiRiskReport) return null;
+    const ward = (db.users || []).find((x) => x.id === wardId) || null;
+    const link = (db.guardianLinks || []).find(
+      (l) => l.guardianId === u.id && l.wardId === wardId,
+    );
+    return {
+      ...tx,
+      ward: ward
+        ? {
+            id: ward.id,
+            name: ward.shortName || ward.name,
+            fullName: ward.name,
+            phone: ward.phone,
+            avatarColor: ward.avatarColor || null,
+          }
+        : null,
+      threshold: tx.thresholdAtRequest || link?.threshold || null,
+      kind:
+        tx.status === 'blocked' && tx.reason === 'ai_blocked'
+          ? 'auto_block'
+          : tx.aboveThreshold && tx.guardianAlerted
+            ? 'high_value_approve'
+            : 'other',
+    };
+  },
+
   async getReview(id) {
     const db = getDb();
     const r = (db.pendingReviews || []).find((x) => x.id === id);
     if (!r) return null;
-    expireIfNeeded(db, r);
-    setDb(db);
+    if (expireIfNeeded(db, r)) setDb(db);
     const ward = (db.users || []).find((u) => u.id === r.fromUserId) || null;
     return {
       ...r,
