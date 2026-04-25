@@ -158,41 +158,7 @@ export default function TransferPending() {
           </div>
         </div>
       )}
-
-      <h2 className="section-title">Talk to your guardian</h2>
-      <Card padded={false}>
-        <div className="chat-window">
-          {(review.clarifications || []).length === 0 && (
-            <div className="muted" style={{ padding: 16, textAlign: 'center', fontSize: 12 }}>
-              Your guardian may ask questions before deciding. Reply here.
-            </div>
-          )}
-          {(review.clarifications || []).map((m) => (
-            <div key={m.id} className={`chat-bubble chat-${m.from === 'ward' ? 'self' : 'other'}`}>
-              <div className="chat-from">{m.fromName || (m.from === 'ward' ? 'You' : 'Guardian')}</div>
-              <div className="chat-text">{m.text}</div>
-            </div>
-          ))}
-          <div ref={chatEndRef} />
-        </div>
-        <div className="chat-input-row">
-          <input
-            className="chat-input"
-            placeholder="Reply to guardian…"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-                send();
-              }
-            }}
-          />
-          <button className="chat-send" disabled={sending || !text.trim()} onClick={send}>
-            ↑
-          </button>
-        </div>
-      </Card>
+      
     </div>
   );
 }

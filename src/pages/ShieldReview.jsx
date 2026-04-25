@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Card, PageHeader } from '../components';
 import { familyShieldService } from '../services';
@@ -9,24 +9,6 @@ function fmtRemaining(ms) {
   const ss = String(total % 60).padStart(2, '0');
   return `${mm}:${ss}`;
 }
-
-const SUGGESTED_FOR = {
-  police_impersonation: [
-    "Mama, who told you to send this money?",
-    "Please hang up the phone now. I'm calling you.",
-    "Police never ask you to transfer money to verify your IC.",
-  ],
-  child_impulse_purchase: [
-    "Hey buddy, what's this for?",
-    "Remember our weekly limit — let's pick a smaller pack.",
-    "Let's discuss when I'm home.",
-  ],
-  default: [
-    "Are you sure about this transfer?",
-    "Who asked you to send this money?",
-    "I'll call you in 1 minute.",
-  ],
-};
 
 function aiSuggestedAction(level) {
   switch (level) {
@@ -75,12 +57,8 @@ export default function ShieldReview() {
   const navigate = useNavigate();
   const [review, setReview] = useState(null);
   const [now, setNow] = useState(Date.now());
-  const [text, setText] = useState('');
-  const [sending, setSending] = useState(false);
-  const [decideMessage, setDecideMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(null);
-  const chatEndRef = useRef(null);
 
   useEffect(() => {
     let mounted = true;
@@ -98,31 +76,13 @@ export default function ShieldReview() {
     };
   }, [id]);
 
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [review?.clarifications?.length]);
-
-  const send = async (preset) => {
-    const body = preset || text;
-    if (!body.trim()) return;
-    setSending(true);
-    try {
-      await familyShieldService.addClarification(id, body);
-      if (!preset) setText('');
-      const r = await familyShieldService.getReview(id);
-      setReview(r);
-    } finally {
-      setSending(false);
-    }
-  };
-
   const decide = async (decision) => {
     setSubmitting(true);
     try {
       const r = await familyShieldService.decideReview(
         id,
         decision,
-        decideMessage || (decision === 'block' ? 'Blocked by guardian' : 'Approved by guardian'),
+        decision === 'block' ? 'Blocked by guardian' : 'Approved by guardian',
       );
       setDone(r);
     } finally {
@@ -178,7 +138,6 @@ export default function ShieldReview() {
   const remaining = ends - now;
   const totalMs = (review.coolOffMinutes || 5) * 60 * 1000;
   const elapsedRatio = Math.min(1, Math.max(0, 1 - remaining / totalMs));
-  const suggested = SUGGESTED_FOR[ai.matchedScamPattern] || SUGGESTED_FOR.default;
   const suggestion = aiSuggestedAction(ai.level);
   const wardShortName = review.fromShortName || review.fromName;
   const wardPhone = review.fromPhone;
@@ -187,12 +146,6 @@ export default function ShieldReview() {
     if (wardPhone) {
       window.location.href = `tel:${wardPhone}`;
     }
-    // log the call as a clarification so it shows in the chat history
-    familyShieldService
-      .addClarification(id, `📞 Called ${wardShortName} to verify`)
-      .then(() => familyShieldService.getReview(id))
-      .then((r) => r && setReview(r))
-      .catch(() => {});
   };
 
   return (
@@ -280,87 +233,6 @@ export default function ShieldReview() {
           </div>
           <div>{ai.recommendation}</div>
         </div>
-      </Card>
-
-      <h2 className="section-title">
-        💬 Clarify with {review.fromShortName || review.fromName}
-      </h2>
-      <Card padded={false}>
-        <div className="chat-window">
-          {(review.clarifications || []).length === 0 && (
-            <div className="muted" style={{ padding: 16, textAlign: 'center', fontSize: 12 }}>
-              Ask before deciding. The cool-off gives you time to confirm with the family member.
-            </div>
-          )}
-          {(review.clarifications || []).map((m) => (
-            <div
-              key={m.id}
-              className={`chat-bubble chat-${m.from === 'guardian' ? 'self' : 'other'}`}
-            >
-              <div className="chat-from">{m.fromName || (m.from === 'guardian' ? 'You' : 'Ward')}</div>
-              <div className="chat-text">{m.text}</div>
-            </div>
-          ))}
-          <div ref={chatEndRef} />
-        </div>
-
-        <div className="chat-suggested">
-          {suggested.map((s) => (
-            <button
-              key={s}
-              className="chat-suggested-chip"
-              onClick={() => send(s)}
-              disabled={sending}
-            >
-              {s}
-            </button>
-          ))}
-        </div>
-
-        <div className="chat-input-row">
-          <input
-            className="chat-input"
-            placeholder={`Ask ${review.fromShortName || 'them'} something…`}
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-                send();
-              }
-            }}
-          />
-          <button className="chat-send" disabled={sending || !text.trim()} onClick={() => send()}>
-            ↑
-          </button>
-        </div>
-      </Card>
-
-      <h2 className="section-title">Decide</h2>
-      <Card>
-        <div className="muted" style={{ fontSize: 11, marginBottom: 6 }}>
-          Final message to {review.fromShortName || review.fromName}
-        </div>
-        <textarea
-          value={decideMessage}
-          onChange={(e) => setDecideMessage(e.target.value)}
-          rows={2}
-          placeholder={
-            ai.matchedScamPattern === 'police_impersonation'
-              ? 'Mama, this is a scam. I\'m calling you now.'
-              : 'Optional message…'
-          }
-          style={{
-            width: '100%',
-            border: '1px solid var(--tng-border)',
-            borderRadius: 10,
-            padding: 10,
-            outline: 'none',
-            resize: 'vertical',
-            fontSize: 13,
-            fontFamily: 'inherit',
-          }}
-        />
       </Card>
 
       <div className="decide-stack">

@@ -1,10 +1,10 @@
 [
   {
-    "id": "user-mei",
+    "id": "user-Fatimah",
     "phone": "0123456789",
     "pin": "111111",
-    "name": "Auntie Mei",
-    "shortName": "Mama",
+    "name": "Fatimah",
+    "shortName": "Fatimah",
     "role": "ward",
     "wardType": "elderly",
     "guardianId": "user-ahmad",
@@ -13,14 +13,21 @@
     "age": 68,
     "language": "en-MY",
     "avatarColor": "#FFB347",
-    "joinedAt": "2024-08-15T09:00:00.000Z"
+    "joinedAt": "2024-08-15T09:00:00.000Z",
+    "customerId": "cust-7788",
+    "kycLevel": "basic",
+    "accountAgeDays": 619,
+    "avgTxnAmount30d": 350,
+    "txnCount30d": 22,
+    "deviceId": "device-fatimah-android-001",
+    "ipAddress": "60.51.118.42"
   },
   {
-    "id": "user-aiden",
+    "id": "user-Danial",
     "phone": "0111234567",
     "pin": "333333",
-    "name": "Aiden Tan",
-    "shortName": "Aiden",
+    "name": "Danial Sobri",
+    "shortName": "Danial",
     "role": "ward",
     "wardType": "child",
     "guardianId": "user-ahmad",
@@ -29,7 +36,14 @@
     "age": 12,
     "language": "en-MY",
     "avatarColor": "#7ED957",
-    "joinedAt": "2025-01-20T09:00:00.000Z"
+    "joinedAt": "2025-01-20T09:00:00.000Z",
+    "customerId": "cust-9012",
+    "kycLevel": "basic",
+    "accountAgeDays": 461,
+    "avgTxnAmount30d": 18,
+    "txnCount30d": 28,
+    "deviceId": "device-danial-android-002",
+    "ipAddress": "115.164.77.91"
   },
   {
     "id": "user-ahmad",
@@ -38,12 +52,19 @@
     "name": "Ahmad bin Hassan",
     "shortName": "Ahmad",
     "role": "guardian",
-    "wardIds": ["user-mei", "user-aiden"],
+    "wardIds": ["user-Fatimah", "user-Danial"],
     "city": "Singapore",
     "country": "Singapore",
     "age": 34,
     "language": "en-MY",
     "avatarColor": "#1FB57A",
-    "joinedAt": "2024-08-10T09:00:00.000Z"
+    "joinedAt": "2024-08-10T09:00:00.000Z",
+    "customerId": "cust-3344",
+    "kycLevel": "full",
+    "accountAgeDays": 624,
+    "avgTxnAmount30d": 850,
+    "txnCount30d": 18,
+    "deviceId": "device-ahmad-iphone-003",
+    "ipAddress": "175.140.203.18"
   }
 ]

@@ -4,8 +4,7 @@ import { familyShieldService } from '../services';
 import './BottomNav.css';
 
 const TABS = [
-  { to: '/', label: 'Home', icon: '⌂', end: true },
-  { to: '/scan', label: 'Pay', icon: '⌖' },
+  { to: '/', label: 'Home', icon: '⌂' , end: true },
   { to: '/shield', label: 'Shield', icon: '⛨' },
   { to: '/history', label: 'History', icon: '☰' },
   { to: '/profile', label: 'Profile', icon: '☺' },

@@ -6,7 +6,7 @@ import {
   Reload,
   Transfer,
   TransferPending,
-  Scan,
+  TransferProcessing,
   History,
   Profile,
   Shield,
@@ -49,6 +49,14 @@ export default function App() {
             }
           />
           <Route
+            path="/transfer/processing"
+            element={
+              <ProtectedRoute>
+                <TransferProcessing />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/transfer/pending/:id"
             element={
               <ProtectedRoute>
@@ -69,14 +77,6 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <ShieldReview />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/scan"
-            element={
-              <ProtectedRoute>
-                <Scan />
               </ProtectedRoute>
             }
           />

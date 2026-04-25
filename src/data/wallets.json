@@ -1,12 +1,12 @@
 {
-  "user-mei": {
-    "balance": 12340.00,
+  "user-Fatimah": {
+    "balance": 1200.00,
     "currency": "MYR",
     "dailyTransferLimit": 5000,
     "monthlyTransferLimit": 30000,
     "lastUpdated": "2026-04-24T10:30:00.000Z"
   },
-  "user-aiden": {
+  "user-Danial": {
     "balance": 180.50,
     "currency": "MYR",
     "dailyTransferLimit": 200,

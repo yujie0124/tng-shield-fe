@@ -7,7 +7,12 @@
     "scenario": "known-good",
     "trusted": true,
     "verifiedBy": "Utility · Bank Negara registered",
-    "verifiedNote": "National electricity utility"
+    "verifiedNote": "National electricity utility",
+    "accountId": "acc-tnb-001",
+    "recipientType": "merchant",
+    "networkReputationScore": 96,
+    "recentFraudReports": 0,
+    "contextNote": "National utility · millions of bill payments processed monthly."
   },
   {
     "id": "SPDMRT-IPH",
@@ -17,31 +22,12 @@
     "scenario": "known-good",
     "trusted": true,
     "verifiedBy": "SSM · 200001023456-X",
-    "verifiedNote": "Verified TNG merchant"
-  },
-  {
-    "id": "WATSONS-IPH",
-    "name": "Watson's Pharmacy",
-    "category": "Health",
-    "trusted": true
-  },
-  {
-    "id": "MYNEWS-KL",
-    "name": "MyNews KLIA2",
-    "category": "Convenience",
-    "trusted": true
-  },
-  {
-    "id": "FAMILYMART-PJ",
-    "name": "FamilyMart Petaling Jaya",
-    "category": "Convenience",
-    "trusted": true
-  },
-  {
-    "id": "ROBLOX-PURCHASE-XL",
-    "name": "Roblox Premium 22,500 Robux",
-    "category": "Gaming",
-    "trusted": false
+    "verifiedNote": "Verified TNG merchant",
+    "accountId": "acc-spd-iph-001",
+    "recipientType": "merchant",
+    "networkReputationScore": 88,
+    "recentFraudReports": 0,
+    "contextNote": "Long-standing grocery chain · regular small-ticket payments."
   },
   {
     "id": "KAK-SITI-KUIH",
@@ -50,7 +36,12 @@
     "category": "Hawker",
     "scenario": "grey-zone",
     "trusted": null,
-    "verifiedNote": "Individual hawker · No SSM record"
+    "verifiedNote": "Individual hawker · No SSM record",
+    "accountId": "acc-ks-kuih-001",
+    "recipientType": "individual",
+    "networkReputationScore": 58,
+    "recentFraudReports": 0,
+    "contextNote": "Unregistered hawker · low transaction volume, no fraud history."
   },
   {
     "id": "CAROUSELL-FASTDEAL88",
@@ -59,16 +50,12 @@
     "category": "P2P",
     "scenario": "grey-zone",
     "trusted": null,
-    "verifiedNote": "P2P seller · 4-day-old account"
-  },
-  {
-    "id": "P2P-AHMAD-NEW",
-    "name": "Ahmad (new TNG account)",
-    "phone": "0119998877",
-    "category": "P2P",
-    "scenario": "grey-zone",
-    "trusted": null,
-    "verifiedNote": "TNG account < 30 days old"
+    "verifiedNote": "P2P seller · 4-day-old account",
+    "accountId": "acc-fd88-001",
+    "recipientType": "individual",
+    "networkReputationScore": 38,
+    "recentFraudReports": 2,
+    "contextNote": "P2P seller account opened 4 days ago · 2 buyer disputes pending."
   },
   {
     "id": "MERCH-UNK-001",
@@ -78,7 +65,12 @@
     "scenario": "known-bad",
     "trusted": false,
     "blacklistedBy": ["TNG", "Bank Negara", "NSRC"],
-    "blacklistedNote": "Mule account · 14 reported cases"
+    "blacklistedNote": "Mule account · 14 reported cases",
+    "accountId": "acc-qc-001",
+    "recipientType": "merchant",
+    "networkReputationScore": 12,
+    "recentFraudReports": 18,
+    "contextNote": "Recipient flagged as mule account · 14 NSRC fraud reports in last 30 days."
   },
   {
     "id": "EZ-MONEY-LOAN",
@@ -88,6 +80,11 @@
     "scenario": "known-bad",
     "trusted": false,
     "blacklistedBy": ["Bank Negara", "TNG"],
-    "blacklistedNote": "Unlicensed money lender (Ah Long)"
+    "blacklistedNote": "Unlicensed money lender (Ah Long)",
+    "accountId": "acc-ez-001",
+    "recipientType": "merchant",
+    "networkReputationScore": 8,
+    "recentFraudReports": 24,
+    "contextNote": "Unlicensed money lender · multiple harassment complaints filed via NSRC."
   }
 ]

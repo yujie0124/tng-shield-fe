@@ -37,6 +37,11 @@ function ensureDb() {
   if (!fs.existsSync(DB_PATH)) fs.writeFileSync(DB_PATH, JSON.stringify(seedDb(), null, 2))
 }
 
+function reseedDb() {
+  if (!fs.existsSync(DB_DIR)) fs.mkdirSync(DB_DIR, { recursive: true })
+  fs.writeFileSync(DB_PATH, JSON.stringify(seedDb(), null, 2))
+}
+
 function readDb() {
   ensureDb()
   return JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'))
@@ -51,6 +56,13 @@ function sharedDbPlugin(): Plugin {
   return {
     name: 'tng-shared-db',
     configureServer(server) {
+      // Re-seed db.json from src/data/*.json on every dev server start so the
+      // seed files are the source of truth. Any in-app mutations made during
+      // a previous session are discarded.
+      reseedDb()
+      // eslint-disable-next-line no-console
+      console.log('[tng-shared-db] re-seeded server-data/db.json from src/data')
+
       server.middlewares.use('/api/db', (req, res, next) => {
         const url = req.url || '/'
 

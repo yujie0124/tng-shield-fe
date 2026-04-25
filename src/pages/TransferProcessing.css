@@ -1,0 +1,374 @@
+.tp-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 100%;
+  padding: 36px 20px 28px;
+  background: var(--tng-bg);
+}
+
+.tp-spinner {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 5px solid #e0e6ef;
+  border-top-color: var(--tng-blue);
+  animation: tp-spin 0.9s linear infinite;
+  margin-bottom: 22px;
+}
+@keyframes tp-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.tp-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: var(--tng-text);
+}
+.tp-sub {
+  color: var(--tng-text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+  max-width: 280px;
+  margin: 0 0 18px;
+}
+.tp-meta {
+  font-size: 13px;
+  background: var(--tng-blue-bg);
+  color: var(--tng-blue-dark);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+.tp-steps {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 280px;
+}
+.tp-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--tng-text-muted);
+}
+.tp-step::before {
+  content: '○';
+  color: var(--tng-text-muted);
+  font-size: 14px;
+}
+.tp-step.active::before {
+  content: '●';
+  color: var(--tng-blue);
+  animation: tp-pulse 1.4s infinite;
+}
+@keyframes tp-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ===== Result variants ===== */
+.tp-result {
+  padding-top: 28px;
+}
+.tp-result-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.tp-icon-good {
+  background: var(--tng-success);
+}
+.tp-icon-bad {
+  background: var(--tng-danger);
+}
+.tp-result-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 4px 0 6px;
+}
+.tp-result-sub {
+  color: var(--tng-text);
+  font-size: 13px;
+  line-height: 1.5;
+  max-width: 320px;
+  margin: 0 0 16px;
+}
+
+.tp-source-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+.tp-source-pill {
+  background: #f5d2d2;
+  color: #8a2424;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.tp-reason-card {
+  width: 100%;
+  background: #fff;
+  border-radius: 14px;
+  padding: 14px 16px;
+  text-align: left;
+  border: 1px solid #f4c8c8;
+  box-shadow: 0 4px 12px rgba(230, 69, 69, 0.08);
+  margin-bottom: 12px;
+}
+.tp-reason-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--tng-danger);
+  margin-bottom: 8px;
+}
+.tp-reason-list {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--tng-text);
+}
+
+.tp-rec {
+  width: 100%;
+  background: #fff8e1;
+  border-left: 3px solid #ffc72c;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13px;
+  text-align: left;
+  margin-bottom: 12px;
+  color: #6b5300;
+}
+
+.tp-result-card {
+  width: 100%;
+  background: #fff;
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(0, 30, 80, 0.06);
+}
+.tp-result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--tng-text-muted);
+}
+.tp-result-row b,
+.tp-result-row > span:last-child {
+  color: var(--tng-text);
+}
+.tp-result-mono {
+  font-family: 'SFMono-Regular', Menlo, monospace;
+  font-size: 12px;
+}
+
+/* ===== AI Risk Report card (shared by approved + blocked) ===== */
+.tp-risk-card {
+  width: 100%;
+  background: #fff;
+  border-radius: 14px;
+  padding: 14px 16px;
+  text-align: left;
+  margin-bottom: 12px;
+  border: 1px solid #e6ecf5;
+  box-shadow: 0 4px 12px rgba(0, 30, 80, 0.06);
+}
+.tp-risk-approved {
+  border-color: #c8e9d5;
+  box-shadow: 0 4px 12px rgba(31, 181, 122, 0.10);
+}
+.tp-risk-blocked {
+  border-color: #f4c8c8;
+  box-shadow: 0 4px 12px rgba(230, 69, 69, 0.10);
+}
+
+.tp-risk-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed #e6ecf5;
+  margin-bottom: 10px;
+}
+.tp-risk-bot {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #eef3fb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.tp-risk-head-text {
+  flex: 1;
+  min-width: 0;
+}
+.tp-risk-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--tng-text-muted);
+}
+.tp-risk-headline {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--tng-text);
+  margin-top: 2px;
+}
+
+.tp-risk-score-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+.tp-risk-pill-approved {
+  background: #e6f6ee;
+  color: #0f7a4a;
+}
+.tp-risk-pill-blocked {
+  background: #fdebeb;
+  color: #8a2424;
+}
+.tp-risk-score-num {
+  font-size: 20px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.tp-risk-score-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.tp-risk-score-of {
+  font-size: 9px;
+  font-weight: 600;
+  opacity: 0.75;
+}
+.tp-risk-score-level {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.tp-risk-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--tng-text-muted);
+  margin-bottom: 6px;
+}
+.tp-risk-reasons {
+  margin: 0 0 10px;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--tng-text);
+}
+.tp-risk-reasons-approved li::marker {
+  color: var(--tng-success);
+}
+.tp-risk-reasons-blocked li::marker {
+  color: var(--tng-danger);
+}
+
+.tp-risk-rec {
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.tp-risk-rec-approved {
+  background: #f1faf5;
+  border-left: 3px solid var(--tng-success);
+  color: #0f5e3a;
+}
+.tp-risk-rec-blocked {
+  background: #fdf3f3;
+  border-left: 3px solid var(--tng-danger);
+  color: #6b1f1f;
+}
+.tp-risk-rec-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  opacity: 0.75;
+  margin-bottom: 3px;
+}
+.tp-risk-rec-body {
+  font-weight: 500;
+}
+
+/* ===== Above-threshold heads-up banner (auto-approved scenario 2) ===== */
+.tp-threshold-alert {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #fff8e1;
+  border: 1px solid #ffe1a3;
+  border-left: 3px solid #ffc72c;
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  text-align: left;
+  color: #6b5300;
+}
+.tp-threshold-icon {
+  font-size: 18px;
+  line-height: 1.1;
+  flex-shrink: 0;
+}
+.tp-threshold-text {
+  font-size: 13px;
+  line-height: 1.45;
+}
+.tp-threshold-text b {
+  color: #4a3a00;
+}

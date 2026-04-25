@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import './QuickActions.css';
 
 const ACTIONS = [
-  { key: 'scan', label: 'Scan', icon: '⌖', path: '/scan' },
   { key: 'transfer', label: 'Transfer', icon: '↗', path: '/transfer' },
   { key: 'reload', label: 'Reload', icon: '＋', path: '/reload' },
   { key: 'history', label: 'History', icon: '☰', path: '/history' },

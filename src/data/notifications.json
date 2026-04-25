@@ -1,7 +1,7 @@
 {
-  "user-mei": [
+  "user-Fatimah": [
     {
-      "id": "nt-mei-001",
+      "id": "nt-Fatimah-001",
       "type": "shield_save",
       "title": "Yesterday we kept you safe",
       "body": "RM 4,800 scam transfer blocked. Tap to learn how to spot police impersonation scams.",
@@ -9,7 +9,7 @@
       "read": false
     },
     {
-      "id": "nt-mei-002",
+      "id": "nt-Fatimah-002",
       "type": "guardian_message",
       "title": "Message from Ahmad",
       "body": "Mama, please answer when I call. Don't pick up unknown numbers.",
@@ -17,7 +17,7 @@
       "read": true
     }
   ],
-  "user-aiden": [
+  "user-Danial": [
     {
       "id": "nt-ai-001",
       "type": "guardian_message",
@@ -39,7 +39,7 @@
     {
       "id": "nt-ah-002",
       "type": "weekly_summary",
-      "title": "Aiden's weekly summary",
+      "title": "Danial's weekly summary",
       "body": "5 transactions, RM 26 spent, 1 review (Roblox blocked).",
       "createdAt": "2026-04-21T08:00:00.000Z",
       "read": true

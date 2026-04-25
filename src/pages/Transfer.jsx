@@ -37,27 +37,19 @@ export default function Transfer() {
     shield?.role === 'ward' && shield.threshold && numAmount >= shield.threshold;
   const canSubmit = recipientPhone && numAmount > 0 && !submitting;
 
-  const onSubmit = async (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
     if (!canSubmit) return;
     setError('');
-    setSubmitting(true);
-    try {
-      const res = await walletService.transfer({
-        recipientPhone,
-        amount: numAmount,
-        note,
-      });
-      if (res?.status === 'pending_review') {
-        navigate(`/transfer/pending/${res.reviewId}`, { replace: true });
-      } else {
-        navigate('/', { replace: true });
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || 'Transfer failed');
-    } finally {
-      setSubmitting(false);
-    }
+    navigate('/transfer/processing', {
+      state: {
+        transfer: {
+          recipientPhone,
+          amount: numAmount,
+          note,
+        },
+      },
+    });
   };
 
   const pickMerchant = (m) => {

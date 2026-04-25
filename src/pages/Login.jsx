@@ -6,14 +6,14 @@ import './Login.css';
 
 const DEMO_ACCOUNTS = [
   {
-    label: 'Auntie Mei',
+    label: 'Fatimah',
     sub: 'Elderly ward · 68',
     phone: '0123456789',
     pin: '111111',
     badge: '👵',
   },
   {
-    label: 'Aiden',
+    label: 'Danial',
     sub: 'Child ward · 12',
     phone: '0111234567',
     pin: '333333',

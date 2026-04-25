@@ -1,64 +1,56 @@
 {
-  "user-mei": [
+  "user-Fatimah": [
     {
-      "id": "ct-mei-001",
+      "id": "ct-Fatimah-001",
       "name": "Ahmad (son)",
       "phone": "0198765432",
       "trusted": true,
-      "lastUsed": "2026-04-12T09:00:00.000Z"
+      "lastUsed": "2026-04-12T09:00:00.000Z",
+      "priorHistoryWithRecipient": true
     },
     {
-      "id": "ct-mei-002",
-      "name": "Lim Kah Wai",
-      "phone": "0181112222",
-      "trusted": true,
-      "lastUsed": "2026-04-20T07:55:00.000Z"
-    },
-    {
-      "id": "ct-mei-003",
+      "id": "ct-Fatimah-003",
       "name": "Siti (neighbour)",
       "phone": "0177778888",
       "trusted": true,
-      "lastUsed": "2026-03-30T12:00:00.000Z"
+      "lastUsed": "2026-03-30T12:00:00.000Z",
+      "priorHistoryWithRecipient": true
     }
   ],
-  "user-aiden": [
+  "user-Danial": [
     {
       "id": "ct-ai-001",
       "name": "Papa",
       "phone": "0198765432",
       "trusted": true,
-      "lastUsed": "2026-04-22T08:00:00.000Z"
+      "lastUsed": "2026-04-22T08:00:00.000Z",
+      "priorHistoryWithRecipient": true
     },
     {
       "id": "ct-ai-002",
       "name": "Mama (Grandma)",
       "phone": "0123456789",
       "trusted": true,
-      "lastUsed": "2026-04-10T08:00:00.000Z"
+      "lastUsed": "2026-04-10T08:00:00.000Z",
+      "priorHistoryWithRecipient": true
     }
   ],
   "user-ahmad": [
     {
       "id": "ct-ah-001",
-      "name": "Mama (Mei)",
+      "name": "Mama (Fatimah)",
       "phone": "0123456789",
       "trusted": true,
-      "lastUsed": "2026-04-12T09:00:00.000Z"
+      "lastUsed": "2026-04-12T09:00:00.000Z",
+      "priorHistoryWithRecipient": true
     },
     {
       "id": "ct-ah-002",
-      "name": "Aiden (son)",
+      "name": "Danial (son)",
       "phone": "0111234567",
       "trusted": true,
-      "lastUsed": "2026-04-22T08:00:00.000Z"
-    },
-    {
-      "id": "ct-ah-003",
-      "name": "Lim Kah Wai (sister)",
-      "phone": "0181112222",
-      "trusted": true,
-      "lastUsed": "2026-04-21T16:00:00.000Z"
+      "lastUsed": "2026-04-22T08:00:00.000Z",
+      "priorHistoryWithRecipient": true
     }
   ]
 }
