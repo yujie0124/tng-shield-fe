@@ -1,15 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { Amplify } from 'aws-amplify';
 import App from './App';
 import { AuthProvider } from './context/AuthContext';
 import { initDb } from './services/mockBackend';
 import { PhoneFrame } from './components';
-import outputs from '../amplify_outputs.json';
 import './styles/global.css';
-
-Amplify.configure(outputs);
 
 const rootEl = document.getElementById('root')!;
 const root = ReactDOM.createRoot(rootEl);
