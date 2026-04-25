@@ -1,0 +1,34 @@
+[
+  {
+    "id": "link-001",
+    "wardId": "user-mei",
+    "guardianId": "user-ahmad",
+    "relationship": "mother",
+    "wardType": "elderly",
+    "threshold": 500,
+    "coolOffMinutes": 5,
+    "linkedAt": "2024-08-16T09:00:00.000Z",
+    "permissions": {
+      "review": true,
+      "viewActivity": true,
+      "adjustThreshold": true,
+      "weeklySummary": true
+    }
+  },
+  {
+    "id": "link-002",
+    "wardId": "user-aiden",
+    "guardianId": "user-ahmad",
+    "relationship": "son",
+    "wardType": "child",
+    "threshold": 50,
+    "coolOffMinutes": 5,
+    "linkedAt": "2025-01-21T09:00:00.000Z",
+    "permissions": {
+      "review": true,
+      "viewActivity": true,
+      "adjustThreshold": true,
+      "weeklySummary": true
+    }
+  }
+]

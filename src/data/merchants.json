@@ -1,0 +1,13 @@
+[
+  { "id": "TNB-MY", "name": "Tenaga Nasional", "category": "Bills", "trusted": true },
+  { "id": "SPDMRT-IPH", "name": "99 Speedmart Ipoh", "category": "Groceries", "trusted": true },
+  { "id": "WATSONS-IPH", "name": "Watson's Pharmacy", "category": "Health", "trusted": true },
+  { "id": "CLINIC-DRTAN", "name": "Klinik Dr Tan", "category": "Health", "trusted": true },
+  { "id": "GRAB-SG", "name": "Grab Singapore", "category": "Transport", "trusted": true },
+  { "id": "FP-TPN", "name": "FairPrice Tampines", "category": "Groceries", "trusted": true },
+  { "id": "SCH-CANTEEN", "name": "School Canteen", "category": "Food", "trusted": true },
+  { "id": "MYNEWS-KL", "name": "MyNews KLIA2", "category": "Convenience", "trusted": true },
+  { "id": "FAMILYMART-PJ", "name": "FamilyMart Petaling Jaya", "category": "Convenience", "trusted": true },
+  { "id": "ROBLOX-PURCHASE-XL", "name": "Roblox Premium 22,500 Robux", "category": "Gaming", "trusted": false },
+  { "id": "MERCH-UNK-001", "name": "QUICK CASH SDN BHD", "category": "Unknown", "trusted": false }
+]

@@ -1,0 +1,23 @@
+{
+  "user-mei": {
+    "balance": 12340.00,
+    "currency": "MYR",
+    "dailyTransferLimit": 5000,
+    "monthlyTransferLimit": 30000,
+    "lastUpdated": "2026-04-24T10:30:00.000Z"
+  },
+  "user-aiden": {
+    "balance": 180.50,
+    "currency": "MYR",
+    "dailyTransferLimit": 200,
+    "monthlyTransferLimit": 1000,
+    "lastUpdated": "2026-04-24T17:00:00.000Z"
+  },
+  "user-ahmad": {
+    "balance": 8420.50,
+    "currency": "MYR",
+    "dailyTransferLimit": 20000,
+    "monthlyTransferLimit": 100000,
+    "lastUpdated": "2026-04-24T22:15:00.000Z"
+  }
+}

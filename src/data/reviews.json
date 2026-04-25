@@ -1,0 +1,76 @@
+[
+  {
+    "id": "rv-historic-001",
+    "fromUserId": "user-mei",
+    "fromName": "Auntie Mei",
+    "fromShortName": "Mama",
+    "wardType": "elderly",
+    "guardianId": "user-ahmad",
+    "recipientPhone": "5142****0089",
+    "recipientName": "BUKIT AMAN VERIFY",
+    "amount": 4800.00,
+    "note": "Police verify - urgent",
+    "thresholdAtRequest": 500,
+    "coolOffMinutes": 5,
+    "createdAt": "2026-03-28T11:40:00.000Z",
+    "coolOffEndsAt": "2026-03-28T11:45:00.000Z",
+    "decidedAt": "2026-03-28T11:42:00.000Z",
+    "status": "blocked",
+    "guardianMessage": "Mama, this is a scam. I'm calling you now.",
+    "aiRiskReport": {
+      "score": 96,
+      "level": "critical",
+      "summary": "Almost certainly a police-impersonation scam. Recipient phone matches a national fraud blacklist and the transfer was initiated during an active phone call.",
+      "matchedScamPattern": "police_impersonation",
+      "factors": [
+        { "id": "blacklisted", "label": "Recipient on TNG fraud blacklist", "severity": "critical", "weight": 40 },
+        { "id": "above_threshold", "label": "Amount RM 4,800 — 9.6× ward's threshold", "severity": "high", "weight": 25 },
+        { "id": "new_recipient", "label": "Never transferred to this number before", "severity": "medium", "weight": 15 },
+        { "id": "active_call", "label": "Initiated during incoming call (47 min)", "severity": "high", "weight": 16 }
+      ],
+      "recommendation": "Block immediately. Call ward to confirm safety and remind them not to send money to unknown callers."
+    },
+    "clarifications": [
+      { "id": "msg-h-001", "from": "guardian", "fromName": "Ahmad", "text": "Mama, who told you to send this money?", "at": "2026-03-28T11:40:30.000Z" },
+      { "id": "msg-h-002", "from": "ward", "fromName": "Mama", "text": "Sergeant Rahman. He said my IC was used for money laundering.", "at": "2026-03-28T11:41:00.000Z" },
+      { "id": "msg-h-003", "from": "guardian", "fromName": "Ahmad", "text": "Mama that is a scam. Police never ask you to transfer money. Hang up now, I'm calling you.", "at": "2026-03-28T11:41:45.000Z" }
+    ]
+  },
+  {
+    "id": "rv-historic-002",
+    "fromUserId": "user-aiden",
+    "fromName": "Aiden Tan",
+    "fromShortName": "Aiden",
+    "wardType": "child",
+    "guardianId": "user-ahmad",
+    "recipientPhone": "ROBLOX-PURCHASE-XL",
+    "recipientName": "Roblox Premium 22,500 Robux",
+    "amount": 299.00,
+    "note": "buying robux",
+    "thresholdAtRequest": 50,
+    "coolOffMinutes": 5,
+    "createdAt": "2026-04-19T20:30:00.000Z",
+    "coolOffEndsAt": "2026-04-19T20:35:00.000Z",
+    "decidedAt": "2026-04-19T20:34:00.000Z",
+    "status": "blocked",
+    "guardianMessage": "We talked about this — RM 50 limit per week for in-game stuff. Let's pick a smaller pack tomorrow together.",
+    "aiRiskReport": {
+      "score": 62,
+      "level": "medium",
+      "summary": "In-app gaming purchase 6× the child's weekly threshold. Common impulse-spend pattern for under-13 accounts.",
+      "matchedScamPattern": "child_impulse_purchase",
+      "factors": [
+        { "id": "above_threshold", "label": "RM 299 — 6× ward's RM 50 threshold", "severity": "high", "weight": 35 },
+        { "id": "gaming_merchant", "label": "Gaming merchant (high-impulse category)", "severity": "medium", "weight": 15 },
+        { "id": "evening_time", "label": "Initiated at 20:30 (after school hours)", "severity": "low", "weight": 6 },
+        { "id": "first_time_merchant", "label": "First-time purchase at this merchant", "severity": "medium", "weight": 6 }
+      ],
+      "recommendation": "Review with child. Consider approving a smaller, age-appropriate amount instead of the full RM 299."
+    },
+    "clarifications": [
+      { "id": "msg-h-101", "from": "guardian", "fromName": "Papa", "text": "Hey buddy, what's the 22,500 Robux for?", "at": "2026-04-19T20:31:00.000Z" },
+      { "id": "msg-h-102", "from": "ward", "fromName": "Aiden", "text": "I want to buy the new game pass everyone has it", "at": "2026-04-19T20:31:40.000Z" },
+      { "id": "msg-h-103", "from": "guardian", "fromName": "Papa", "text": "Remember our deal — RM 50/week. Let's pick a smaller pack tomorrow ok?", "at": "2026-04-19T20:32:30.000Z" }
+    ]
+  }
+]

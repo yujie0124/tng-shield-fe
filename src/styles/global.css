@@ -1,0 +1,1001 @@
+:root {
+  /* Touch 'n Go inspired palette */
+  --tng-blue: #0064D2;
+  --tng-blue-dark: #004AA0;
+  --tng-blue-light: #4A90E2;
+  --tng-blue-bg: #E8F2FC;
+  --tng-accent: #FFC72C;
+  --tng-success: #1FB57A;
+  --tng-danger: #E64545;
+  --tng-text: #1A2330;
+  --tng-text-muted: #6B7785;
+  --tng-bg: #F4F6FA;
+  --tng-surface: #FFFFFF;
+  --tng-border: #E4E8EE;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 2px 6px rgba(0, 30, 80, 0.06);
+  --shadow-md: 0 8px 20px rgba(0, 30, 80, 0.08);
+
+  --bottom-nav-height: 64px;
+
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: var(--tng-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--tng-bg);
+  color: var(--tng-text);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+a {
+  color: var(--tng-blue);
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: 15px;
+}
+
+/* Mobile-first app shell — caps width on desktop so it looks like a phone */
+.app-shell {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--tng-bg);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.page {
+  flex: 1;
+  padding: 16px 16px calc(var(--bottom-nav-height) + 24px);
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0 16px;
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--tng-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 16px 0 8px;
+}
+
+.muted {
+  color: var(--tng-text-muted);
+}
+
+/* ===== Family Shield banners ===== */
+.shield-banner {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  background: var(--tng-blue-bg);
+  border-left: 4px solid var(--tng-accent);
+  cursor: pointer;
+}
+.shield-banner-ward {
+  background: #FFF8E1;
+  border-left-color: var(--tng-accent);
+  cursor: default;
+}
+.shield-banner-guardian {
+  background: var(--tng-blue-bg);
+  border-left-color: var(--tng-blue);
+}
+.shield-banner-alert {
+  background: #FFEBEE;
+  border-left-color: var(--tng-danger);
+  animation: tng-pulse 1.4s infinite;
+}
+.shield-banner-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.shield-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--tng-blue);
+  color: #fff;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.shield-banner-title {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--tng-blue-dark);
+}
+.shield-banner-sub {
+  font-size: 12px;
+  color: var(--tng-text-muted);
+  margin-top: 2px;
+}
+.shield-banner-cta {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--tng-success);
+  background: rgba(31, 181, 122, 0.12);
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+.shield-banner-cta-alert {
+  color: var(--tng-danger);
+  background: rgba(230, 69, 69, 0.12);
+}
+.shield-demo-btn {
+  margin-top: 10px;
+  width: 100%;
+  background: var(--tng-blue-dark);
+  color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ===== Scam call banner ===== */
+.scam-call-banner {
+  background: var(--tng-danger);
+  color: #fff;
+  padding: 8px 14px;
+  margin: -16px -16px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.scam-call-dot {
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border-radius: 50%;
+  animation: tng-pulse 1s infinite;
+}
+
+/* ===== Result screens (pending / blocked / approved) ===== */
+.result-screen {
+  text-align: center;
+}
+.result-warn {
+  background: #FFF8E1;
+  margin: -16px -16px 0;
+  padding: 24px 20px calc(var(--bottom-nav-height) + 24px);
+  min-height: calc(100vh - var(--bottom-nav-height));
+}
+.result-safe {
+  background: #E8F5E9;
+  margin: -16px -16px 0;
+  padding: 24px 20px calc(var(--bottom-nav-height) + 24px);
+  min-height: calc(100vh - var(--bottom-nav-height));
+}
+.result-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin: 12px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 700;
+}
+.result-icon-warn {
+  background: var(--tng-blue);
+}
+.result-icon-safe {
+  background: var(--tng-success);
+}
+.result-title {
+  margin: 8px 0 6px;
+  font-size: 18px;
+  color: var(--tng-blue-dark);
+}
+.result-safe .result-title {
+  color: #1B5E20;
+}
+.result-sub {
+  font-size: 13px;
+  color: var(--tng-text);
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+.result-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px;
+  margin: 10px 0;
+  text-align: left;
+  box-shadow: var(--shadow-sm);
+}
+.result-warn-box {
+  border: 2px solid var(--tng-danger);
+}
+.result-warn-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--tng-danger);
+  margin-bottom: 4px;
+}
+.result-warn-body {
+  font-size: 12px;
+  color: var(--tng-text);
+  line-height: 1.5;
+}
+.result-flag {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  padding: 6px 0;
+}
+.result-flag-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--tng-danger);
+  border-radius: 50%;
+  margin-top: 7px;
+  flex-shrink: 0;
+}
+.result-message {
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px;
+  margin: 12px 0;
+  text-align: left;
+}
+.result-status {
+  background: var(--tng-blue);
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 14px;
+  font-size: 13px;
+}
+
+/* ===== Shield page ===== */
+.shield-stat-grid {
+  display: flex;
+  gap: 12px;
+}
+.shield-stat {
+  flex: 1;
+}
+.shield-stat-success .shield-stat-num {
+  color: #1B5E20;
+}
+.shield-stat-num {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 2px;
+  color: var(--tng-blue-dark);
+}
+.shield-stat-foot {
+  font-size: 11px;
+  color: var(--tng-success);
+  margin-top: 4px;
+}
+.shield-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--tng-blue);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+/* ===== Login demo accounts ===== */
+.login-demo {
+  margin-top: 16px;
+  background: var(--tng-surface);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  box-shadow: var(--shadow-sm);
+}
+.login-demo-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--tng-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+.login-demo-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--tng-blue-bg);
+  font-size: 12px;
+  color: var(--tng-text);
+  margin-bottom: 6px;
+  text-align: left;
+}
+.login-demo-row:last-child {
+  margin-bottom: 0;
+}
+
+@keyframes tng-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+/* ===== Family Shield · ward banner variant for child ===== */
+.shield-banner-child {
+  background: #E8F8E0;
+  border-left-color: #7ED957;
+}
+.shield-banner-child .shield-banner-title {
+  color: #2C7A1F;
+}
+
+/* ===== Threshold info on Transfer ===== */
+.threshold-info {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: var(--tng-blue-bg);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  font-size: 12px;
+  color: var(--tng-blue-dark);
+  line-height: 1.5;
+}
+.threshold-info span {
+  font-size: 16px;
+}
+.threshold-warn {
+  margin-top: 12px;
+  background: #FFF3CD;
+  border: 1px solid #FFC72C;
+  color: #6B5300;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ===== Cool-off countdown ring ===== */
+.cooloff-hero {
+  text-align: center;
+  margin: 8px 0 16px;
+}
+.cooloff-ring {
+  --p: 0;
+  --size: 168px;
+  --thickness: 12px;
+  width: var(--size);
+  height: var(--size);
+  margin: 0 auto;
+  border-radius: 50%;
+  background:
+    conic-gradient(
+      var(--tng-danger) calc(var(--p) * 360deg),
+      #FFE0B2 0deg
+    );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: var(--shadow-md);
+}
+.cooloff-ring::before {
+  content: '';
+  position: absolute;
+  inset: var(--thickness);
+  background: #fff;
+  border-radius: 50%;
+}
+.cooloff-ring-sm {
+  --size: 96px;
+  --thickness: 8px;
+}
+.cooloff-ring-inner {
+  position: relative;
+  text-align: center;
+}
+.cooloff-time {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--tng-text);
+  font-variant-numeric: tabular-nums;
+}
+.cooloff-ring-sm .cooloff-time {
+  font-size: 18px;
+}
+.cooloff-time-sub {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--tng-text-muted);
+  margin-top: 2px;
+}
+.cooloff-title {
+  margin-top: 14px;
+  font-size: 17px;
+  font-weight: 700;
+}
+.cooloff-sub {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--tng-text-muted);
+}
+.result-warn-page {
+  background: linear-gradient(180deg, #FFF8E1 0%, var(--tng-bg) 240px);
+}
+
+/* ===== Risk severity colors ===== */
+.sev-low    { background: #4CAF50 !important; }
+.sev-medium { background: #FFB300 !important; }
+.sev-high   { background: #FB8C00 !important; }
+.sev-critical { background: var(--tng-danger) !important; }
+
+/* ===== Risk badge (compact, used on pending list) ===== */
+.risk-badge {
+  border-radius: 12px;
+  padding: 8px 10px;
+  text-align: center;
+  min-width: 56px;
+  color: #fff;
+  background: var(--tng-text-muted);
+}
+.risk-badge-low      { background: #4CAF50; }
+.risk-badge-medium   { background: #FFB300; }
+.risk-badge-high     { background: #FB8C00; }
+.risk-badge-critical { background: var(--tng-danger); }
+.risk-badge-num {
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1;
+}
+.risk-badge-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+  opacity: 0.9;
+}
+
+/* ===== Risk gauge (large, used in AI risk card) ===== */
+.risk-gauge {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: var(--tng-text-muted);
+  flex-shrink: 0;
+}
+.risk-gauge.risk-low      { background: #4CAF50; }
+.risk-gauge.risk-medium   { background: #FFB300; }
+.risk-gauge.risk-high     { background: #FB8C00; }
+.risk-gauge.risk-critical { background: var(--tng-danger); }
+.risk-gauge-num {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1;
+}
+.risk-gauge-of {
+  font-size: 10px;
+  opacity: 0.8;
+  margin-top: 2px;
+}
+
+/* ===== AI Risk summary block ===== */
+.risk-summary-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.risk-level-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--tng-blue-bg);
+  color: var(--tng-blue-dark);
+  margin-bottom: 4px;
+}
+.risk-low      .risk-level-tag { background: #E8F5E9; color: #1B5E20; }
+.risk-medium   .risk-level-tag { background: #FFF3CD; color: #6B5300; }
+.risk-high     .risk-level-tag { background: #FFE0B2; color: #B45309; }
+.risk-critical .risk-level-tag { background: #FFEBEE; color: #B71C1C; }
+.risk-pattern {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: var(--tng-danger);
+}
+.risk-summary-text {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--tng-text);
+}
+
+/* ===== Risk factors list ===== */
+.risk-factors {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--tng-border);
+}
+.risk-factor {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 8px 0;
+}
+.risk-factor-bar {
+  width: 56px;
+  height: 6px;
+  background: #F0F1F4;
+  border-radius: 3px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.risk-factor-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--tng-text-muted);
+  transition: width 200ms ease;
+}
+.risk-factor.sev-low      .risk-factor-fill { background: #4CAF50; }
+.risk-factor.sev-medium   .risk-factor-fill { background: #FFB300; }
+.risk-factor.sev-high     .risk-factor-fill { background: #FB8C00; }
+.risk-factor.sev-critical .risk-factor-fill { background: var(--tng-danger); }
+.risk-factor-text { flex: 1; }
+.risk-factor-label { font-size: 13px; }
+.risk-factor-meta {
+  font-size: 10px;
+  color: var(--tng-text-muted);
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+.risk-recommendation {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #F4F8FE;
+  border-left: 3px solid var(--tng-blue);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* ===== Pending review card on guardian dashboard ===== */
+.pending-card { border-left: 3px solid var(--tng-danger); }
+.pending-from {
+  color: var(--tng-danger);
+  font-weight: 700;
+  font-size: 13px;
+}
+.pending-line {
+  font-size: 14px;
+  margin-top: 4px;
+  font-weight: 600;
+}
+.pending-pattern {
+  font-size: 11px;
+  color: var(--tng-danger);
+  margin-top: 4px;
+}
+.pending-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--tng-border);
+  font-size: 12px;
+}
+.pending-countdown {
+  font-weight: 700;
+  color: var(--tng-danger);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===== Ward card in guardian dashboard ===== */
+.ward-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: var(--tng-blue-bg);
+  color: var(--tng-blue-dark);
+  margin-left: 6px;
+  vertical-align: middle;
+}
+.ward-pending-row {
+  margin-top: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #FFEBEE;
+  color: var(--tng-danger);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ward-settings-row {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--tng-border);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.ward-edit-btn {
+  margin-left: auto;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: var(--tng-blue-bg);
+  color: var(--tng-blue);
+  font-size: 12px;
+  font-weight: 600;
+}
+.ward-edit {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--tng-border);
+  display: grid;
+  gap: 8px;
+}
+.ward-edit label { display: grid; gap: 4px; }
+.ward-edit .input {
+  border: 1px solid var(--tng-border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  width: 100%;
+}
+
+/* ===== Review hero ===== */
+.review-hero {
+  background: #fff;
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 4px;
+}
+.review-hero-left { flex: 1; }
+.review-amount {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--tng-danger);
+  margin-top: 2px;
+}
+.review-recipient {
+  font-weight: 600;
+  font-size: 14px;
+}
+.review-hero-right {
+  flex-shrink: 0;
+}
+
+/* ===== Chat (clarifications) ===== */
+.chat-window {
+  max-height: 240px;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #FAFBFC;
+}
+.chat-bubble {
+  max-width: 78%;
+  padding: 8px 12px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.chat-self {
+  align-self: flex-end;
+  background: var(--tng-blue);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+.chat-other {
+  align-self: flex-start;
+  background: #fff;
+  color: var(--tng-text);
+  border: 1px solid var(--tng-border);
+  border-bottom-left-radius: 4px;
+}
+.chat-from {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.7;
+  margin-bottom: 2px;
+}
+.chat-self .chat-from { color: rgba(255,255,255,0.85); }
+.chat-text { white-space: pre-wrap; }
+.chat-suggested {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 12px 0;
+}
+.chat-suggested-chip {
+  font-size: 11px;
+  border: 1px solid var(--tng-border);
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: #fff;
+  color: var(--tng-text);
+}
+.chat-suggested-chip:hover { background: var(--tng-blue-bg); }
+.chat-input-row {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--tng-border);
+  background: #fff;
+}
+.chat-input {
+  flex: 1;
+  border: 1px solid var(--tng-border);
+  border-radius: 999px;
+  padding: 8px 14px;
+  outline: none;
+  font-size: 13px;
+}
+.chat-input:focus { border-color: var(--tng-blue); }
+.chat-send {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--tng-blue);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.chat-send:disabled { background: var(--tng-text-muted); opacity: 0.5; }
+
+/* ===== AI suggested decision banner ===== */
+.ai-decision {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  margin: 12px 0 4px;
+  border: 1px solid var(--tng-border);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+.ai-decision::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--tng-blue);
+}
+.ai-decision-danger { background: #FFF5F5; }
+.ai-decision-danger::before { background: var(--tng-danger); }
+.ai-decision-warn   { background: #FFF8E1; }
+.ai-decision-warn::before { background: #FB8C00; }
+.ai-decision-safe   { background: #E8F5E9; }
+.ai-decision-safe::before { background: var(--tng-success); }
+
+.ai-decision-icon-wrap {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+.ai-decision-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  background: #fff;
+  border: 1px solid var(--tng-border);
+}
+.ai-decision-danger .ai-decision-icon { background: var(--tng-danger); color: #fff; border-color: transparent; }
+.ai-decision-warn   .ai-decision-icon { background: #FB8C00; color: #fff; border-color: transparent; }
+.ai-decision-safe   .ai-decision-icon { background: var(--tng-success); color: #fff; border-color: transparent; }
+.ai-decision-bot {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  box-shadow: var(--shadow-sm);
+}
+.ai-decision-body { flex: 1; min-width: 0; }
+.ai-decision-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--tng-text-muted);
+}
+.ai-decision-action {
+  font-size: 17px;
+  font-weight: 800;
+  margin: 2px 0 4px;
+  color: var(--tng-text);
+}
+.ai-decision-danger .ai-decision-action { color: #B71C1C; }
+.ai-decision-warn   .ai-decision-action { color: #B45309; }
+.ai-decision-safe   .ai-decision-action { color: #1B5E20; }
+.ai-decision-reason {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--tng-text);
+}
+
+/* ===== Decide stack (3 buttons) ===== */
+.decide-stack {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.decide-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.decide-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 14px;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 14px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.05s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+  text-align: left;
+}
+.decide-btn:active:not(:disabled) { transform: scale(0.98); }
+.decide-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.decide-btn-call {
+  background: var(--tng-success);
+  color: #fff;
+  padding: 16px 16px;
+  box-shadow: var(--shadow-sm);
+}
+.decide-btn-call .decide-btn-icon { font-size: 22px; }
+.decide-btn-call .decide-btn-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.2;
+}
+.decide-btn-call .decide-btn-title { font-size: 15px; font-weight: 700; }
+.decide-btn-call .decide-btn-sub {
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.9;
+  margin-top: 2px;
+}
+
+.decide-btn-block {
+  background: var(--tng-danger);
+  color: #fff;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 8px;
+}
+.decide-btn-block .decide-btn-icon { font-size: 20px; }
+
+.decide-btn-approve {
+  background: var(--tng-blue);
+  color: #fff;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 8px;
+}
+.decide-btn-approve .decide-btn-icon { font-size: 20px; }
+
+.decide-btn-recommended {
+  border-color: var(--tng-accent);
+  box-shadow: 0 0 0 3px rgba(255, 199, 44, 0.25), var(--shadow-sm);
+}
+
+.decide-ai-badge {
+  position: absolute;
+  top: -8px;
+  right: 10px;
+  background: var(--tng-accent);
+  color: #1A2330;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  box-shadow: var(--shadow-sm);
+  white-space: nowrap;
+}
+
+/* ===== Call pill (ward → guardian) ===== */
+.call-pill {
+  background: var(--tng-success);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}

@@ -1,0 +1,81 @@
+.review-toast {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 24px);
+  max-width: 460px;
+  background: var(--tng-surface);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 28px rgba(0, 30, 80, 0.18);
+  padding: 12px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 200;
+  animation: review-toast-in 280ms ease-out;
+  border-left: 4px solid var(--tng-blue);
+}
+
+.review-toast-low      { border-left-color: #4CAF50; }
+.review-toast-medium   { border-left-color: #FFB300; }
+.review-toast-high     { border-left-color: #FB8C00; }
+.review-toast-critical { border-left-color: var(--tng-danger); }
+
+.review-toast-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--tng-blue);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.review-toast-critical .review-toast-icon { background: var(--tng-danger); }
+.review-toast-high     .review-toast-icon { background: #FB8C00; }
+.review-toast-medium   .review-toast-icon { background: #FFB300; color: #1A2330; }
+
+.review-toast-body {
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+}
+.review-toast-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--tng-text);
+}
+.review-toast-sub {
+  font-size: 11px;
+  color: var(--tng-text-muted);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.review-toast-cta {
+  background: var(--tng-blue);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+.review-toast-close {
+  background: transparent;
+  color: var(--tng-text-muted);
+  font-size: 20px;
+  line-height: 1;
+  padding: 4px 6px;
+  flex-shrink: 0;
+}
+
+@keyframes review-toast-in {
+  from { transform: translate(-50%, -120%); opacity: 0; }
+  to   { transform: translate(-50%, 0);     opacity: 1; }
+}

@@ -1,0 +1,8 @@
+[
+  {
+    "id": "guardian_review",
+    "label": "Guardian Review",
+    "description": "Transfers above the threshold pause for 5 minutes while a guardian reviews an AI risk report and confirms with the family member.",
+    "default": true
+  }
+]

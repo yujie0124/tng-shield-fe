@@ -1,0 +1,64 @@
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  height: var(--bottom-nav-height);
+  background: var(--tng-surface);
+  border-top: 1px solid var(--tng-border);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 50;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottom-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 0;
+  color: var(--tng-text-muted);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.bottom-nav-item.active {
+  color: var(--tng-blue);
+}
+
+.bottom-nav-icon-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.bottom-nav-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.bottom-nav-badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--tng-danger);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 18px;
+  text-align: center;
+  box-shadow: 0 0 0 2px var(--tng-surface);
+  animation: tng-pulse 1.4s infinite;
+}
+
+.bottom-nav-label {
+  font-size: 11px;
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "police_impersonation",
+    "label": "Police impersonation scam",
+    "description": "Caller claims to be police/Bukit Aman/MACC asking the victim to transfer money to a 'verification account'.",
+    "keywords": ["bukit aman", "macc", "polis", "sergeant", "verify account", "money laundering"],
+    "severity": "critical",
+    "advice": "Police never ask you to transfer money to verify your identity. Hang up and call 999."
+  },
+  {
+    "id": "loan_advance_fee",
+    "label": "Advance-fee loan scam",
+    "description": "Promises a quick loan but requires a 'processing fee' upfront.",
+    "keywords": ["pinjaman cepat", "loan approval fee", "processing fee", "guarantor deposit"],
+    "severity": "high",
+    "advice": "Licensed lenders never ask for upfront fees by eWallet."
+  },
+  {
+    "id": "courier_parcel",
+    "label": "Parcel/courier scam",
+    "description": "Caller pretends to be from a courier saying a parcel is held due to illegal contents.",
+    "keywords": ["pos laju", "dhl parcel", "customs clearance", "illegal parcel"],
+    "severity": "high",
+    "advice": "Couriers don't ask for payment via personal transfer. Verify on the official courier app."
+  },
+  {
+    "id": "love_investment",
+    "label": "Love / investment scam",
+    "description": "Online romantic interest pressures victim to invest in a 'guaranteed return' platform.",
+    "keywords": ["guaranteed returns", "crypto platform", "bitcoin profit", "trading mentor"],
+    "severity": "high",
+    "advice": "Anyone you've never met in person who asks for money is almost always a scammer."
+  },
+  {
+    "id": "child_impulse_purchase",
+    "label": "Child impulse / in-game purchase",
+    "description": "Large in-app gaming or merchandise purchase initiated by a young user, often above the agreed weekly limit.",
+    "keywords": ["robux", "v-bucks", "diamonds", "skin", "battle pass"],
+    "severity": "medium",
+    "advice": "Talk to your child about the limit. Consider approving a smaller, age-appropriate amount."
+  }
+]

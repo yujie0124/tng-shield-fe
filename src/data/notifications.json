@@ -1,0 +1,48 @@
+{
+  "user-mei": [
+    {
+      "id": "nt-mei-001",
+      "type": "shield_save",
+      "title": "Yesterday we kept you safe",
+      "body": "RM 4,800 scam transfer blocked. Tap to learn how to spot police impersonation scams.",
+      "createdAt": "2026-03-29T09:00:00.000Z",
+      "read": false
+    },
+    {
+      "id": "nt-mei-002",
+      "type": "guardian_message",
+      "title": "Message from Ahmad",
+      "body": "Mama, please answer when I call. Don't pick up unknown numbers.",
+      "createdAt": "2026-03-28T11:50:00.000Z",
+      "read": true
+    }
+  ],
+  "user-aiden": [
+    {
+      "id": "nt-ai-001",
+      "type": "guardian_message",
+      "title": "Message from Papa",
+      "body": "Buddy, we set your weekly spend limit to RM 50. Anything bigger we'll review together.",
+      "createdAt": "2026-04-19T20:36:00.000Z",
+      "read": true
+    }
+  ],
+  "user-ahmad": [
+    {
+      "id": "nt-ah-001",
+      "type": "weekly_summary",
+      "title": "Mama's weekly summary",
+      "body": "12 transactions, RM 380 spent, 0 alerts this week.",
+      "createdAt": "2026-04-21T08:00:00.000Z",
+      "read": true
+    },
+    {
+      "id": "nt-ah-002",
+      "type": "weekly_summary",
+      "title": "Aiden's weekly summary",
+      "body": "5 transactions, RM 26 spent, 1 review (Roblox blocked).",
+      "createdAt": "2026-04-21T08:00:00.000Z",
+      "read": true
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+.input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.input-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tng-text-muted);
+}
+
+.input {
+  background: var(--tng-surface);
+  border: 1px solid var(--tng-border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  outline: none;
+  color: var(--tng-text);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input:focus {
+  border-color: var(--tng-blue);
+  box-shadow: 0 0 0 3px rgba(0, 100, 210, 0.12);
+}
+
+.input-error {
+  border-color: var(--tng-danger);
+}
+
+.input-error-text {
+  color: var(--tng-danger);
+  font-size: 12px;
+}

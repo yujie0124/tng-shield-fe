@@ -1,0 +1,19 @@
+.card {
+  background: var(--tng-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.card-padded {
+  padding: 16px;
+}
+
+.card-clickable {
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.15s ease;
+}
+
+.card-clickable:active {
+  transform: scale(0.98);
+  box-shadow: var(--shadow-md);
+}

@@ -27,3 +27,6 @@ dist-ssr
 .amplify
 amplify_outputs*
 amplifyconfiguration*
+
+# shared dev-server JSON store (regenerated on first GET)
+server-data/
