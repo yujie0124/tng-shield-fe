@@ -2,10 +2,13 @@
   "phones": [
     "5142****0089",
     "0177773333",
-    "0166664444"
+    "0166664444",
+    "0188889999"
   ],
   "merchants": [
-    "MERCH-UNK-001"
+    "MERCH-UNK-001",
+    "BUKIT-AMAN-VERIFY",
+    "EZ-MONEY-LOAN"
   ],
   "patterns": [
     "BUKIT AMAN VERIFY",

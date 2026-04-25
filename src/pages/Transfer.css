@@ -1,0 +1,351 @@
+/* ===== Transfer page (redesigned) ===== */
+
+.transfer-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background: #fff;
+  padding-bottom: calc(var(--bottom-nav-height) + 80px);
+}
+
+/* ----- Blue header ----- */
+.transfer-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--tng-blue);
+  color: #fff;
+  padding: 14px 16px 16px;
+}
+.transfer-back {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: transparent;
+  font-size: 26px;
+  font-weight: 300;
+  line-height: 1;
+  padding: 0;
+}
+.transfer-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  pointer-events: none;
+}
+.transfer-header-spacer {
+  width: 36px;
+}
+
+/* ----- Recipient (continues blue background) ----- */
+.transfer-recipient-area {
+  background: var(--tng-blue);
+  padding: 0 16px 26px;
+  position: relative;
+}
+.transfer-recipient-label {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.transfer-recipient-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 72px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+}
+.transfer-recipient-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #d3e7fa;
+  color: var(--tng-blue);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.transfer-recipient-name {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: #1a2330;
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
+}
+.transfer-recipient-placeholder {
+  color: rgba(26, 35, 48, 0.55);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.transfer-recipient-caret {
+  color: #8a93a3;
+  font-size: 14px;
+  margin-left: 6px;
+  flex-shrink: 0;
+  transition: color 120ms;
+}
+.transfer-recipient-card.is-open .transfer-recipient-caret {
+  color: var(--tng-blue);
+}
+
+/* ----- Recipient picker (simple dropdown overlay) ----- */
+.transfer-recipient-anchor {
+  position: relative;
+  z-index: 30;
+}
+.transfer-recipient-picker {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  margin: 0;
+  background: #fff;
+  border-radius: 12px;
+  padding: 6px 0;
+  list-style: none;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+  max-height: 280px;
+  overflow-y: auto;
+  z-index: 30;
+}
+.transfer-picker-item {
+  width: 100%;
+  display: block;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a2330;
+}
+.transfer-picker-item:hover,
+.transfer-picker-item:focus-visible {
+  background: rgba(0, 0, 0, 0.04);
+  outline: none;
+}
+.transfer-picker-manual {
+  width: 100%;
+  display: block;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  border-top: 1px solid #eef2f7;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--tng-blue);
+}
+.transfer-picker-manual:hover {
+  background: rgba(0, 110, 200, 0.04);
+}
+
+.transfer-phone-input {
+  margin-top: 10px;
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  background: #fff;
+  outline: none;
+  font-family: inherit;
+}
+.transfer-phone-input:focus {
+  border-color: var(--tng-accent);
+}
+
+.transfer-verify-pill {
+  margin-top: 14px;
+  background: #f1f5fb;
+  color: #5a6573;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.transfer-verify-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid #6b7785;
+  font-size: 10px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #6b7785;
+}
+
+/* ----- Amount ----- */
+.transfer-amount-block {
+  margin: 22px 16px 0;
+}
+.transfer-amount-label {
+  color: var(--tng-danger);
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.transfer-amount-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.transfer-amount-input-wrap {
+  flex: 1;
+  min-width: 0;
+}
+.transfer-amount-input-line {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.transfer-amount-currency {
+  font-size: 22px;
+  color: #8a93a3;
+  font-weight: 500;
+}
+.transfer-amount-input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  border: none;
+  outline: none;
+  font-size: 28px;
+  font-weight: 500;
+  color: #8a93a3;
+  background: transparent;
+  padding: 0;
+  font-family: inherit;
+}
+.transfer-amount-input::placeholder {
+  color: #c4cad3;
+}
+.transfer-reload-btn {
+  background: var(--tng-blue);
+  color: #fff;
+  border-radius: 999px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.transfer-amount-divider {
+  height: 1px;
+  background: #e0e3e8;
+  margin-top: 10px;
+}
+.transfer-amount-foot {
+  margin-top: 8px;
+  color: var(--tng-danger);
+  font-size: 13px;
+}
+
+/* ----- Send gift ----- */
+.transfer-gift-btn {
+  margin: 16px 16px 0;
+  background: #fff;
+  border: 1.5px solid var(--tng-blue);
+  color: var(--tng-blue);
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+}
+.transfer-gift-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ----- Note ----- */
+.transfer-note-block {
+  margin: 22px 16px 0;
+  position: relative;
+}
+.transfer-note-label {
+  display: block;
+  color: #6b7785;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+.transfer-note-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #e0e3e8;
+  padding: 6px 0 8px;
+  font-size: 16px;
+  font-weight: 600;
+  background: transparent;
+  font-family: inherit;
+  color: var(--tng-text);
+}
+.transfer-note-input:focus {
+  border-bottom-color: var(--tng-blue);
+}
+.transfer-note-counter {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  font-size: 11px;
+  color: #8a93a3;
+}
+
+.transfer-error {
+  margin: 12px 16px 0;
+  color: var(--tng-danger);
+  font-size: 13px;
+}
+
+/* ----- Bottom Next button ----- */
+.transfer-bottom {
+  margin-top: auto;
+  padding: 20px 16px 16px;
+  background: #fff;
+}
+.transfer-next-btn {
+  width: 100%;
+  background: #c8ccd3;
+  color: #fff;
+  border-radius: 999px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  font-family: inherit;
+}
+.transfer-next-btn:not(:disabled) {
+  background: var(--tng-blue);
+  cursor: pointer;
+}

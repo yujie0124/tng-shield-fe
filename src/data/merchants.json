@@ -1,13 +1,93 @@
 [
-  { "id": "TNB-MY", "name": "Tenaga Nasional", "category": "Bills", "trusted": true },
-  { "id": "SPDMRT-IPH", "name": "99 Speedmart Ipoh", "category": "Groceries", "trusted": true },
-  { "id": "WATSONS-IPH", "name": "Watson's Pharmacy", "category": "Health", "trusted": true },
-  { "id": "CLINIC-DRTAN", "name": "Klinik Dr Tan", "category": "Health", "trusted": true },
-  { "id": "GRAB-SG", "name": "Grab Singapore", "category": "Transport", "trusted": true },
-  { "id": "FP-TPN", "name": "FairPrice Tampines", "category": "Groceries", "trusted": true },
-  { "id": "SCH-CANTEEN", "name": "School Canteen", "category": "Food", "trusted": true },
-  { "id": "MYNEWS-KL", "name": "MyNews KLIA2", "category": "Convenience", "trusted": true },
-  { "id": "FAMILYMART-PJ", "name": "FamilyMart Petaling Jaya", "category": "Convenience", "trusted": true },
-  { "id": "ROBLOX-PURCHASE-XL", "name": "Roblox Premium 22,500 Robux", "category": "Gaming", "trusted": false },
-  { "id": "MERCH-UNK-001", "name": "QUICK CASH SDN BHD", "category": "Unknown", "trusted": false }
+  {
+    "id": "TNB-MY",
+    "name": "Tenaga Nasional Berhad",
+    "phone": "1300883100",
+    "category": "Bills",
+    "scenario": "known-good",
+    "trusted": true,
+    "verifiedBy": "Utility · Bank Negara registered",
+    "verifiedNote": "National electricity utility"
+  },
+  {
+    "id": "SPDMRT-IPH",
+    "name": "99 Speedmart Ipoh",
+    "phone": "0123450001",
+    "category": "Groceries",
+    "scenario": "known-good",
+    "trusted": true,
+    "verifiedBy": "SSM · 200001023456-X",
+    "verifiedNote": "Verified TNG merchant"
+  },
+  {
+    "id": "WATSONS-IPH",
+    "name": "Watson's Pharmacy",
+    "category": "Health",
+    "trusted": true
+  },
+  {
+    "id": "MYNEWS-KL",
+    "name": "MyNews KLIA2",
+    "category": "Convenience",
+    "trusted": true
+  },
+  {
+    "id": "FAMILYMART-PJ",
+    "name": "FamilyMart Petaling Jaya",
+    "category": "Convenience",
+    "trusted": true
+  },
+  {
+    "id": "ROBLOX-PURCHASE-XL",
+    "name": "Roblox Premium 22,500 Robux",
+    "category": "Gaming",
+    "trusted": false
+  },
+  {
+    "id": "KAK-SITI-KUIH",
+    "name": "Kak Siti's Kuih (Pasar Malam)",
+    "phone": "0123334455",
+    "category": "Hawker",
+    "scenario": "grey-zone",
+    "trusted": null,
+    "verifiedNote": "Individual hawker · No SSM record"
+  },
+  {
+    "id": "CAROUSELL-FASTDEAL88",
+    "name": "Carousell · fastdeal_88",
+    "phone": "0145556677",
+    "category": "P2P",
+    "scenario": "grey-zone",
+    "trusted": null,
+    "verifiedNote": "P2P seller · 4-day-old account"
+  },
+  {
+    "id": "P2P-AHMAD-NEW",
+    "name": "Ahmad (new TNG account)",
+    "phone": "0119998877",
+    "category": "P2P",
+    "scenario": "grey-zone",
+    "trusted": null,
+    "verifiedNote": "TNG account < 30 days old"
+  },
+  {
+    "id": "MERCH-UNK-001",
+    "name": "QUICK CASH SDN BHD",
+    "phone": "0177773333",
+    "category": "Unknown",
+    "scenario": "known-bad",
+    "trusted": false,
+    "blacklistedBy": ["TNG", "Bank Negara", "NSRC"],
+    "blacklistedNote": "Mule account · 14 reported cases"
+  },
+  {
+    "id": "EZ-MONEY-LOAN",
+    "name": "EZ MONEY LOAN SDN BHD",
+    "phone": "0188889999",
+    "category": "Loan",
+    "scenario": "known-bad",
+    "trusted": false,
+    "blacklistedBy": ["Bank Negara", "TNG"],
+    "blacklistedNote": "Unlicensed money lender (Ah Long)"
+  }
 ]

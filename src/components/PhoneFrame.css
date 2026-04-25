@@ -1,0 +1,218 @@
+/* ===== Phone frame (mockup wrapper for desktop preview) ===== */
+
+.phone-frame {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(0, 100, 210, 0.18), transparent 50%),
+    radial-gradient(circle at 80% 90%, rgba(31, 181, 122, 0.18), transparent 50%),
+    linear-gradient(135deg, #1a2332 0%, #2c3e5e 100%);
+}
+
+.phone-frame-body {
+  position: relative;
+  width: 414px;
+  height: 860px;
+  background: #0c0c0e;
+  border-radius: 56px;
+  padding: 12px;
+  box-shadow:
+    inset 0 0 0 2px #2a2a2d,
+    inset 0 0 0 4px #0c0c0e,
+    0 30px 60px rgba(0, 0, 0, 0.55),
+    0 10px 24px rgba(0, 0, 0, 0.35);
+  flex-shrink: 0;
+}
+
+/* Side buttons (decorative) */
+.phone-frame-body::before {
+  content: '';
+  position: absolute;
+  left: -3px;
+  top: 180px;
+  width: 4px;
+  height: 60px;
+  background: #1a1a1d;
+  border-radius: 2px 0 0 2px;
+  box-shadow: 0 90px 0 #1a1a1d, 0 170px 0 #1a1a1d;
+}
+.phone-frame-body::after {
+  content: '';
+  position: absolute;
+  right: -3px;
+  top: 220px;
+  width: 4px;
+  height: 100px;
+  background: #1a1a1d;
+  border-radius: 0 2px 2px 0;
+}
+
+.phone-frame-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--tng-bg);
+  border-radius: 44px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Status bar (decorative top strip with time + dynamic island + indicators) */
+.phone-frame-statusbar {
+  position: relative;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  background: transparent;
+  z-index: 100;
+  color: #1A2330;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.phone-frame-time {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.2px;
+}
+
+.phone-frame-island {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  height: 30px;
+  background: #000;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px #111;
+}
+
+.phone-frame-status-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #1A2330;
+}
+
+.phone-frame-signal {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 11px;
+}
+.phone-frame-signal i {
+  width: 3px;
+  background: currentColor;
+  border-radius: 1px;
+}
+.phone-frame-signal i:nth-child(1) { height: 4px; }
+.phone-frame-signal i:nth-child(2) { height: 6px; }
+.phone-frame-signal i:nth-child(3) { height: 8px; }
+.phone-frame-signal i:nth-child(4) { height: 11px; }
+
+.phone-frame-wifi {
+  display: inline-flex;
+  align-items: center;
+  color: currentColor;
+}
+
+.phone-frame-battery {
+  position: relative;
+  display: inline-block;
+  width: 24px;
+  height: 11px;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  padding: 1px;
+}
+.phone-frame-battery::after {
+  content: '';
+  position: absolute;
+  right: -3px;
+  top: 3px;
+  width: 2px;
+  height: 5px;
+  background: currentColor;
+  border-radius: 0 1px 1px 0;
+}
+.phone-frame-battery-fill {
+  display: block;
+  height: 100%;
+  width: 80%;
+  background: currentColor;
+  border-radius: 1px;
+}
+
+/* Content area: hosts the app-shell flex column. Scrolling happens inside
+   .app-main; BottomNav sits as the bottom flex child so it always stays
+   pinned. The transform keeps any fixed children (e.g. ReviewToast)
+   anchored to the phone screen, not the browser viewport. */
+.phone-frame-content {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateZ(0);
+}
+
+/* Home indicator overlay at bottom of screen */
+.phone-frame-home-indicator {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 134px;
+  height: 5px;
+  background: rgba(26, 35, 48, 0.55);
+  border-radius: 999px;
+  z-index: 1001;
+  pointer-events: none;
+}
+
+/* Lift the bottom nav above the home indicator strip */
+.phone-frame-content .bottom-nav {
+  padding-bottom: 18px;
+  height: calc(var(--bottom-nav-height) + 18px);
+}
+
+/* On real mobile / narrow viewports, drop the frame and let the app fill the screen */
+@media (max-width: 768px) {
+  .phone-frame {
+    padding: 0;
+    background: var(--tng-bg);
+    min-height: 100vh;
+    align-items: stretch;
+  }
+  .phone-frame-body {
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+  .phone-frame-body::before,
+  .phone-frame-body::after {
+    display: none;
+  }
+  .phone-frame-screen {
+    border-radius: 0;
+  }
+  .phone-frame-statusbar,
+  .phone-frame-island,
+  .phone-frame-home-indicator {
+    display: none;
+  }
+  .phone-frame-content .bottom-nav {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}

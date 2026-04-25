@@ -8,3 +8,4 @@ export { default as BottomNav } from './BottomNav';
 export { default as PageHeader } from './PageHeader';
 export { default as ProtectedRoute } from './ProtectedRoute';
 export { default as ReviewToast } from './ReviewToast';
+export { default as PhoneFrame } from './PhoneFrame';

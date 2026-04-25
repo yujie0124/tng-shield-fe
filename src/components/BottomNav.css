@@ -1,10 +1,7 @@
 .bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
+  flex-shrink: 0;
   width: 100%;
-  max-width: 480px;
   height: var(--bottom-nav-height);
   background: var(--tng-surface);
   border-top: 1px solid var(--tng-border);
